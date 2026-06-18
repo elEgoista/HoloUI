@@ -1,0 +1,357 @@
+.root {
+  --avatar-accent: #00e5ff;
+  --avatar-accent-soft: rgba(0, 229, 255, 0.32);
+  --avatar-accent-dim: rgba(0, 128, 168, 0.16);
+  --avatar-white: #eaffff;
+  --glyph-opacity: 0;
+  --glyph-symbol: "";
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  color: var(--avatar-accent);
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.root[data-state="listening"] {
+  --avatar-accent: #12f1ff;
+  --avatar-accent-soft: rgba(18, 241, 255, 0.48);
+}
+
+.root[data-state="confirm"] {
+  --avatar-accent: #82f6ff;
+  --avatar-accent-soft: rgba(130, 246, 255, 0.42);
+}
+
+.root[data-state="running"] {
+  --avatar-accent: #00d7ff;
+  --avatar-accent-soft: rgba(0, 215, 255, 0.46);
+}
+
+.root[data-state="approval"],
+.root[data-state="result-warning"] {
+  --avatar-accent: #ffc83d;
+  --avatar-accent-soft: rgba(255, 200, 61, 0.42);
+  --avatar-accent-dim: rgba(255, 177, 36, 0.14);
+  --glyph-opacity: 1;
+  --glyph-symbol: "!";
+}
+
+.root[data-state="result-success"] {
+  --avatar-accent: #39f58e;
+  --avatar-accent-soft: rgba(57, 245, 142, 0.42);
+  --avatar-accent-dim: rgba(57, 245, 142, 0.12);
+  --glyph-opacity: 1;
+  --glyph-symbol: "✓";
+}
+
+.root[data-state="result-error"] {
+  --avatar-accent: #ff5f73;
+  --avatar-accent-soft: rgba(255, 95, 115, 0.43);
+  --avatar-accent-dim: rgba(255, 95, 115, 0.13);
+  --glyph-opacity: 1;
+  --glyph-symbol: "!";
+}
+
+.mirrored {
+  transform: scaleX(-1);
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-origin: 50% 58%;
+}
+
+.characterStack {
+  position: absolute;
+  inset: -4% -28% -2%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 16px var(--avatar-accent-soft))
+    drop-shadow(0 0 42px var(--avatar-accent-soft));
+}
+
+.characterFrame {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  user-select: none;
+  transition: none;
+}
+
+.characterFrameActive {
+  opacity: 0.94;
+}
+
+.root[data-state="approval"] .characterFrameActive,
+.root[data-state="result-warning"] .characterFrameActive {
+  filter: sepia(0.16) saturate(1.08) hue-rotate(348deg);
+}
+
+.root[data-state="result-success"] .characterFrameActive {
+  filter: saturate(1.08) hue-rotate(24deg);
+}
+
+.root[data-state="result-error"] .characterFrameActive {
+  filter: saturate(1.12) hue-rotate(144deg);
+}
+
+.portrait {
+  position: absolute;
+  inset: 11% 23% 4%;
+  z-index: 3;
+  filter:
+    drop-shadow(0 0 18px var(--avatar-accent-soft))
+    drop-shadow(0 0 44px var(--avatar-accent-soft));
+}
+
+.portraitHidden {
+  opacity: 0;
+}
+
+.portraitVisible {
+  opacity: 1;
+}
+
+.hairBack {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 6%;
+  height: 54%;
+  border: 1px solid color-mix(in srgb, var(--avatar-accent), transparent 20%);
+  border-radius: 45% 45% 40% 40%;
+  background:
+    linear-gradient(112deg, rgba(1, 23, 42, 0.94), rgba(8, 165, 224, 0.28) 48%, rgba(190, 253, 255, 0.2)),
+    radial-gradient(circle at 74% 16%, rgba(255, 255, 255, 0.36), transparent 16%);
+  box-shadow: inset 16px 0 26px rgba(0, 0, 0, 0.5), inset -15px 0 26px rgba(88, 235, 255, 0.2);
+}
+
+.hairBack::before,
+.hairBack::after {
+  content: "";
+  position: absolute;
+  top: 3%;
+  width: 42%;
+  height: 64%;
+  background: linear-gradient(150deg, rgba(6, 25, 47, 0.92), rgba(26, 209, 255, 0.24));
+  filter: drop-shadow(0 0 12px var(--avatar-accent-soft));
+}
+
+.hairBack::before {
+  left: -3%;
+  border-radius: 55% 18% 55% 38%;
+  transform: rotate(11deg);
+}
+
+.hairBack::after {
+  right: -2%;
+  border-radius: 22% 55% 38% 55%;
+  transform: rotate(-9deg);
+}
+
+.neck {
+  position: absolute;
+  left: 43%;
+  top: 52%;
+  width: 14%;
+  height: 24%;
+  border: 1px solid color-mix(in srgb, var(--avatar-accent), transparent 24%);
+  background: linear-gradient(180deg, rgba(143, 247, 255, 0.38), rgba(3, 20, 37, 0.86));
+  box-shadow: inset 0 0 18px rgba(234, 255, 255, 0.16);
+}
+
+.shoulders {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: 35%;
+  border: 1px solid color-mix(in srgb, var(--avatar-accent), transparent 18%);
+  border-radius: 48% 48% 11% 11%;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.58), transparent 50%, rgba(0, 0, 0, 0.46)),
+    radial-gradient(circle at 50% 8%, rgba(33, 212, 255, 0.35), rgba(0, 25, 48, 0.92) 54%, rgba(0, 5, 15, 0.96));
+  box-shadow: inset 0 0 34px rgba(23, 222, 255, 0.18), 0 0 28px var(--avatar-accent-soft);
+}
+
+.face {
+  position: absolute;
+  left: 25%;
+  top: 15%;
+  width: 50%;
+  height: 45%;
+  border: 1px solid rgba(234, 255, 255, 0.55);
+  border-radius: 47% 47% 43% 43%;
+  background:
+    radial-gradient(circle at 67% 18%, rgba(255, 255, 255, 0.55), transparent 17%),
+    linear-gradient(180deg, rgba(218, 255, 255, 0.84), rgba(67, 198, 238, 0.5) 48%, rgba(15, 96, 148, 0.62));
+  box-shadow:
+    inset 16px 0 26px rgba(0, 40, 70, 0.22),
+    inset -13px 0 24px rgba(226, 255, 255, 0.22),
+    0 0 22px var(--avatar-accent-soft);
+}
+
+.fringe {
+  position: absolute;
+  left: -1%;
+  right: -1%;
+  top: -13%;
+  height: 38%;
+  border-radius: 46% 46% 28% 28%;
+  background:
+    linear-gradient(125deg, rgba(2, 22, 43, 0.94) 0 34%, transparent 35%),
+    linear-gradient(223deg, rgba(2, 47, 77, 0.9) 0 31%, transparent 32%),
+    linear-gradient(180deg, rgba(29, 199, 255, 0.52), rgba(0, 27, 55, 0.82));
+  clip-path: polygon(0 0, 100% 0, 92% 54%, 72% 34%, 55% 68%, 41% 35%, 18% 58%);
+}
+
+.eyeLeft,
+.eyeRight {
+  position: absolute;
+  top: 48%;
+  width: 14%;
+  height: 5%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(0, 10, 22, 0.92);
+  box-shadow: 0 0 11px rgba(0, 229, 255, 0.52);
+}
+
+.eyeLeft {
+  left: 27%;
+}
+
+.eyeRight {
+  right: 27%;
+}
+
+.eyeLeft span,
+.eyeRight span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--avatar-white), transparent);
+  opacity: 0.28;
+}
+
+.eyeLeft span.blink,
+.eyeRight span.blink {
+  transform: scaleY(0.08);
+  opacity: 0.05;
+}
+
+.nose {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 1px;
+  height: 17%;
+  background: linear-gradient(180deg, transparent, rgba(0, 61, 100, 0.76), transparent);
+  box-shadow: 0 0 8px rgba(234, 255, 255, 0.26);
+}
+
+.mouth {
+  position: absolute;
+  left: 42%;
+  top: 76%;
+  width: 16%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(0, 26, 48, 0.88);
+  box-shadow: 0 0 8px rgba(234, 255, 255, 0.26);
+}
+
+.root[data-speaking="true"] .mouth {
+  height: 5px;
+  border-radius: 55%;
+  animation: mouthSpeak 0.38s ease-in-out infinite;
+}
+
+.collar {
+  position: absolute;
+  left: 29%;
+  right: 29%;
+  bottom: 21%;
+  height: 12%;
+  border: 1px solid color-mix(in srgb, var(--avatar-accent), transparent 18%);
+  border-radius: 0 0 44% 44%;
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0.2), rgba(0, 13, 31, 0.86));
+}
+
+.coreLight {
+  position: absolute;
+  left: 47%;
+  bottom: 14%;
+  width: 6%;
+  aspect-ratio: 1;
+  border: 1px solid var(--avatar-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 18px var(--avatar-accent), inset 0 0 10px var(--avatar-accent-soft);
+}
+
+.coreLight::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 58px;
+  background: linear-gradient(180deg, var(--avatar-accent), transparent);
+  box-shadow: 0 0 10px var(--avatar-accent);
+}
+
+.statusGlyph {
+  position: absolute;
+  right: 18%;
+  bottom: 29%;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  width: 15%;
+  min-width: 34px;
+  aspect-ratio: 1;
+  border: 2px solid var(--avatar-accent);
+  border-radius: 50%;
+  color: var(--avatar-accent);
+  font-size: clamp(22px, 4.5vw, 40px);
+  font-weight: 900;
+  opacity: var(--glyph-opacity);
+  text-shadow: 0 0 12px var(--avatar-accent);
+  box-shadow: 0 0 24px var(--avatar-accent-soft), inset 0 0 18px var(--avatar-accent-dim);
+}
+
+.statusGlyph::before {
+  content: var(--glyph-symbol);
+}
+
+@keyframes mouthSpeak {
+  0%,
+  100% {
+    transform: scaleX(0.86) scaleY(0.55);
+  }
+
+  50% {
+    transform: scaleX(1.12) scaleY(1.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mouth {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

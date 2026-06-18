@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": ".tmp-tests",
+    "rootDir": ".",
+    "noEmit": false,
+    "incremental": false
+  },
+  "include": [
+    "lib/hologram/**/*.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".tmp-tests"
+  ]
+}

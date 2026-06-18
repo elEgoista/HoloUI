@@ -1,0 +1,21 @@
+{
+  "projects": [
+    {
+      "id": "default",
+      "name": "Marketplace Agent",
+      "path": "/Users/YOUR_USER/projects/marketplace-agent",
+      "testCommand": "npm test",
+      "defaultBranch": "main"
+    }
+  ],
+  "server": {
+    "port": 8787,
+    "host": "0.0.0.0"
+  },
+  "runner": {
+    "mode": "mock"
+  },
+  "codexCli": {
+    "skipGitRepoCheck": false
+  }
+}

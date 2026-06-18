@@ -1,0 +1,1338 @@
+.hologram-root {
+  --holo-bg: #000000;
+  --holo-deep: #02070a;
+  --holo-panel: #030b12;
+  --holo-cyan: #00e5ff;
+  --holo-soft: #4df3ff;
+  --holo-pale: #7af7ff;
+  --holo-text: #f2fdff;
+  --holo-secondary: #9edfe8;
+  --holo-muted: #4e7c86;
+  --holo-success: #38f59b;
+  --holo-warning: #ffd166;
+  --holo-warning-deep: #ffb84d;
+  --holo-error: #ff4d6d;
+  --holo-panel-opacity: 0.16;
+  --holo-border-strength: 0.42;
+  --holo-text-muted: #4e7c86;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 15%, rgba(0, 229, 255, 0.11), transparent 34%),
+    radial-gradient(circle at 50% 90%, rgba(0, 229, 255, 0.07), transparent 42%),
+    #000;
+  color: var(--holo-text);
+  padding: 22px;
+}
+
+.hologram-root * {
+  box-sizing: border-box;
+}
+
+.hologram-root button,
+.hologram-root input,
+.hologram-root select {
+  font: inherit;
+}
+
+.hologram-fullscreen {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  min-height: calc(100dvh - 44px);
+}
+
+.hologram-titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hologram-titlebar h1 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.hologram-titlebar p {
+  margin: 2px 0;
+  color: var(--holo-secondary);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.holo-legend {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--holo-secondary);
+  font-size: 11px;
+}
+
+.holo-legend i,
+.connection-item i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.holo-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-voice { color: var(--holo-cyan); }
+.legend-warning { color: var(--holo-warning); }
+.legend-error { color: var(--holo-error); }
+.legend-success { color: var(--holo-success); }
+
+.hologram-preview {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr) auto auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 255, var(--holo-border-strength));
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(3, 11, 18, var(--holo-panel-opacity)), rgba(0, 0, 0, 0.92)),
+    radial-gradient(circle at 50% 34%, rgba(0, 229, 255, 0.18), transparent 34%),
+    #000;
+  box-shadow:
+    inset 0 0 42px rgba(0, 229, 255, 0.08),
+    0 0 26px rgba(0, 229, 255, 0.08);
+}
+
+.hologram-preview.state-approval {
+  border-color: rgba(255, 209, 102, 0.62);
+  box-shadow:
+    inset 0 0 56px rgba(255, 184, 77, 0.1),
+    0 0 24px rgba(255, 184, 77, 0.13);
+}
+
+.hologram-preview.result-success {
+  border-color: rgba(56, 245, 155, 0.48);
+  box-shadow:
+    inset 0 0 56px rgba(56, 245, 155, 0.08),
+    0 0 24px rgba(56, 245, 155, 0.1);
+}
+
+.preview-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(0, 229, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 72%);
+}
+
+.preview-meta {
+  position: absolute;
+  inset: 16px 18px auto 18px;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.preview-meta div:first-child {
+  display: grid;
+  gap: 4px;
+  min-width: 136px;
+}
+
+.preview-meta b {
+  color: var(--holo-cyan);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.preview-meta span {
+  color: var(--holo-secondary);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.preview-meta strong {
+  color: var(--holo-text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.preview-meta em {
+  color: var(--holo-soft);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.reflection-badge {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: var(--holo-secondary);
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.reflection-badge i {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(122, 247, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.35), inset 0 0 12px rgba(0, 229, 255, 0.15);
+}
+
+.assistant-avatar {
+  position: relative;
+  align-self: center;
+  justify-self: center;
+  width: min(58dvh, 52vw);
+  min-width: 280px;
+  aspect-ratio: 1.12;
+  margin-top: 18px;
+}
+
+.hologram-compact .assistant-avatar {
+  width: min(44vh, 42vw);
+  min-width: 250px;
+  margin-top: 0;
+}
+
+.hologram-compact .preview-meta {
+  inset: 12px 14px auto 14px;
+}
+
+.hologram-compact .preview-meta div:first-child {
+  min-width: 0;
+}
+
+.hologram-compact .preview-meta b {
+  max-width: 148px;
+  overflow: hidden;
+  color: var(--holo-cyan);
+  font-size: 13px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hologram-compact .preview-meta span,
+.hologram-compact .preview-meta strong,
+.hologram-compact .preview-meta em,
+.hologram-compact .reflection-badge {
+  display: none;
+}
+
+.avatar-hud-ring {
+  position: absolute;
+  inset: 13% 18% 13% 18%;
+  border: 1px solid rgba(0, 229, 255, 0.34);
+  border-radius: 50%;
+  box-shadow: 0 0 22px rgba(0, 229, 255, 0.16);
+  animation: holoSpin 18s linear infinite;
+}
+
+.ring-b {
+  inset: 20% 25% 10% 25%;
+  border-style: dashed;
+  animation-direction: reverse;
+  animation-duration: 24s;
+}
+
+.avatar-scanline {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.9), transparent);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.8);
+  animation: holoScanWide 2.8s linear infinite;
+  opacity: 0.75;
+}
+
+.avatar-waveform {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 38%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+}
+
+.avatar-waveform i {
+  width: 2px;
+  height: calc(8px + (var(--bar-index) % 7) * 4px);
+  background: var(--holo-cyan);
+  box-shadow: 0 0 9px var(--holo-cyan);
+  animation: holoWaveBars 0.9s ease-in-out infinite;
+  animation-delay: calc(var(--bar-index) * 38ms);
+}
+
+.state-listening .avatar-waveform,
+.state-running .avatar-waveform {
+  opacity: 1;
+}
+
+.avatar-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  filter:
+    drop-shadow(0 0 26px rgba(0, 229, 255, 0.72))
+    drop-shadow(0 0 58px rgba(0, 229, 255, 0.34));
+}
+
+.avatar-portrait img {
+  width: 88%;
+  height: 94%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.96;
+}
+
+.hologram-compact .avatar-portrait img {
+  width: 92%;
+  height: 92%;
+}
+
+.avatar-status-glyph {
+  position: absolute;
+  right: 13%;
+  bottom: 23%;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.state-approval .avatar-hud-ring,
+.state-approval .avatar-core {
+  border-color: var(--holo-warning);
+  box-shadow: 0 0 28px rgba(255, 209, 102, 0.48);
+}
+
+.state-approval .avatar-status-glyph {
+  opacity: 1;
+  border: 2px solid var(--holo-warning);
+  box-shadow: 0 0 24px rgba(255, 209, 102, 0.54);
+}
+
+.state-approval .avatar-status-glyph::before {
+  content: "!";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--holo-warning);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.result-success .avatar-status-glyph {
+  opacity: 1;
+  border: 2px solid var(--holo-success);
+  box-shadow: 0 0 24px rgba(56, 245, 155, 0.48);
+}
+
+.result-success .avatar-status-glyph::before {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--holo-success);
+  font-size: 34px;
+}
+
+.voice-status {
+  position: relative;
+  z-index: 5;
+  align-self: end;
+  justify-self: center;
+  width: min(78%, 720px);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin: -22px auto 14px;
+  text-align: center;
+}
+
+.hologram-compact .voice-status {
+  width: min(86%, 560px);
+  margin-bottom: 8px;
+}
+
+.voice-status h2 {
+  margin: 0;
+  color: var(--holo-cyan);
+  font-size: clamp(24px, 3.5vw, 42px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.85);
+}
+
+.state-approval .voice-status h2 {
+  color: var(--holo-warning);
+  text-shadow: 0 0 18px rgba(255, 209, 102, 0.72);
+}
+
+.result-success .voice-status h2 {
+  color: var(--holo-success);
+  text-shadow: 0 0 18px rgba(56, 245, 155, 0.68);
+}
+
+.voice-status p {
+  margin: 0;
+  color: var(--holo-secondary);
+  font-size: clamp(14px, 1.3vw, 19px);
+}
+
+.voice-active,
+.approval-box,
+.result-box,
+.voice-status blockquote {
+  border: 1px solid rgba(122, 247, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(3, 11, 18, 0.58);
+  box-shadow: inset 0 0 22px rgba(0, 229, 255, 0.08);
+}
+
+.voice-active {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: min(100%, 420px);
+  padding: 12px 18px;
+  text-align: left;
+}
+
+.mic-icon {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--holo-soft);
+  border-radius: 50%;
+  box-shadow: 0 0 18px var(--holo-cyan);
+}
+
+.voice-active strong,
+.voice-active span {
+  display: block;
+}
+
+.voice-active strong {
+  color: var(--holo-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.voice-active span {
+  color: var(--holo-secondary);
+}
+
+.voice-status blockquote {
+  width: min(100%, 560px);
+  margin: 0;
+  padding: 14px 20px;
+  color: var(--holo-text);
+  font-size: clamp(18px, 1.65vw, 27px);
+  line-height: 1.35;
+}
+
+.progress-list {
+  width: min(100%, 520px);
+  display: grid;
+  gap: 5px;
+}
+
+.progress-step {
+  display: grid;
+  grid-template-columns: 18px 1fr 18px;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+  border-bottom: 1px solid rgba(122, 247, 255, 0.13);
+  color: var(--holo-secondary);
+  text-align: left;
+}
+
+.progress-step i {
+  width: 13px;
+  height: 13px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.progress-step b {
+  width: 12px;
+  height: 12px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.step-done {
+  color: var(--holo-success);
+}
+
+.step-active {
+  color: var(--holo-cyan);
+}
+
+.step-pending {
+  color: var(--holo-muted);
+}
+
+.approval-box {
+  width: min(100%, 420px);
+  display: grid;
+  gap: 8px;
+  border-color: rgba(255, 209, 102, 0.48);
+  padding: 12px 18px;
+}
+
+.approval-box span {
+  color: var(--holo-text);
+}
+
+.approval-box strong {
+  color: var(--holo-warning);
+  border: 1px solid rgba(255, 209, 102, 0.42);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+}
+
+.result-box {
+  width: min(100%, 600px);
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 10px 18px;
+  border-color: rgba(56, 245, 155, 0.35);
+  padding: 14px 20px;
+  text-align: left;
+}
+
+.result-box span {
+  display: block;
+  color: var(--holo-secondary);
+  font-size: 11px;
+}
+
+.result-box strong {
+  color: var(--holo-success);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.result-box p {
+  grid-column: 1 / -1;
+  color: var(--holo-text);
+  font-size: 14px;
+}
+
+.voice-options {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.voice-options > span {
+  color: var(--holo-cyan);
+  font-size: 13px;
+}
+
+.voice-option-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.holo-command-hint {
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+  min-width: 154px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 5px 10px;
+  border: 1px solid rgba(0, 229, 255, 0.32);
+  border-radius: 7px;
+  background: rgba(3, 11, 18, 0.62);
+  color: var(--holo-soft);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.holo-command-hint small {
+  color: var(--holo-secondary);
+  font-size: 10px;
+}
+
+.holo-command-hint strong {
+  color: inherit;
+  font-size: 12px;
+}
+
+.holo-command-hint em {
+  grid-column: 2;
+  color: var(--holo-muted);
+  font-style: normal;
+  font-size: 10px;
+}
+
+.hint-wave {
+  grid-row: span 2;
+  width: 28px;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 5px);
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+  box-shadow: 0 0 13px currentColor;
+}
+
+.hint-warning {
+  border-color: rgba(255, 209, 102, 0.42);
+  color: var(--holo-warning);
+}
+
+.hint-error {
+  border-color: rgba(255, 77, 109, 0.42);
+  color: var(--holo-error);
+}
+
+.connection-strip {
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0 16px 12px;
+  border: 1px solid rgba(122, 247, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(3, 11, 18, 0.72);
+}
+
+.connection-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 5px 10px;
+  min-height: 50px;
+  padding: 8px 14px;
+  border-right: 1px solid rgba(122, 247, 255, 0.12);
+  color: var(--holo-success);
+}
+
+.connection-item:last-child {
+  border-right: 0;
+}
+
+.connection-item span {
+  color: var(--holo-muted);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.connection-item strong {
+  color: currentColor;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.reflection-item {
+  color: var(--holo-cyan);
+}
+
+.tone-warning { color: var(--holo-warning); }
+.tone-error { color: var(--holo-error); }
+.tone-success { color: var(--holo-success); }
+.tone-voice { color: var(--holo-cyan); }
+
+.reflection-mode {
+  transform: scaleX(-1);
+  filter: contrast(1.15) brightness(1.15);
+}
+
+.brightness-boost {
+  filter: contrast(1.2) brightness(1.25);
+}
+
+.reflection-mode.brightness-boost {
+  filter: contrast(1.22) brightness(1.28);
+}
+
+.high-contrast-mode {
+  --holo-panel-opacity: 0.08;
+  --holo-border-strength: 0.75;
+  --holo-text-muted: #9edfe8;
+}
+
+.hologram-live-page {
+  padding: 16px;
+}
+
+.hologram-live-page .hologram-fullscreen {
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0;
+  min-height: calc(100dvh - 32px);
+}
+
+.hologram-live-page .hologram-titlebar,
+.hologram-live-page .debug-footer-preview {
+  display: none;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape {
+  --landscape-left: minmax(230px, 37%);
+  --landscape-right: minmax(0, 63%);
+  --landscape-gap: clamp(18px, 3vw, 44px);
+  --landscape-pad-x: clamp(22px, 3.4vw, 46px);
+  --landscape-pad-y: clamp(16px, 2.7vh, 28px);
+  display: grid;
+  grid-template-columns: var(--landscape-left) var(--landscape-right);
+  grid-template-rows: auto minmax(0, 1fr) clamp(64px, 9vh, 84px);
+  gap: clamp(10px, 2vh, 18px) var(--landscape-gap);
+  align-items: stretch;
+  padding: var(--landscape-pad-y) var(--landscape-pad-x);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .preview-meta {
+  position: relative;
+  inset: auto;
+  z-index: 6;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: var(--landscape-left) var(--landscape-right);
+  column-gap: var(--landscape-gap);
+  align-items: start;
+  padding: 0;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .project-identity {
+  grid-column: 1;
+  min-width: 0;
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .project-identity span:first-of-type {
+  color: var(--holo-secondary);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .project-identity strong {
+  max-width: 100%;
+  color: var(--holo-text);
+  font-size: clamp(16px, 1.4vw, 21px);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .project-identity span:nth-of-type(2),
+.hologram-live-page .hologram-preview.hologram-landscape .project-identity em {
+  display: none;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .reflection-badge {
+  grid-column: 2;
+  justify-self: end;
+  display: grid;
+  grid-template-columns: 28px auto;
+  align-items: center;
+  justify-items: start;
+  gap: 10px;
+  max-width: 180px;
+  text-align: left;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .reflection-badge span {
+  color: var(--holo-secondary);
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .assistant-avatar {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  justify-self: start;
+  width: min(75vh, 37.5vw);
+  min-width: 240px;
+  max-width: 492px;
+  margin: clamp(8px, 1.5vh, 16px) 0 14px clamp(12px, 1.8vw, 28px);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-status {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 740px);
+  max-width: 740px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 9px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  transform: translateY(16px);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-status h2 {
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-status > p {
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-active,
+.hologram-live-page .hologram-preview.hologram-landscape .voice-status blockquote,
+.hologram-live-page .hologram-preview.hologram-landscape .approval-box,
+.hologram-live-page .hologram-preview.hologram-landscape .result-box,
+.hologram-live-page .hologram-preview.hologram-landscape .progress-list,
+.hologram-live-page .hologram-preview.hologram-landscape .voice-options {
+  width: min(100%, 720px);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-active {
+  justify-self: center;
+  min-width: 0;
+  justify-content: center;
+  max-width: 720px;
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .progress-step,
+.hologram-live-page .hologram-preview.hologram-landscape .result-box,
+.hologram-live-page .hologram-preview.hologram-landscape .approval-box {
+  text-align: center;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .progress-step {
+  grid-template-columns: 18px 1fr 18px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-options {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 0;
+  width: min(100%, 360px);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .voice-option-row {
+  justify-content: center;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint {
+  min-width: min(100%, 158px);
+  grid-template-columns: 26px 1fr;
+  gap: 3px 8px;
+  padding: 7px 10px;
+  border-color: rgba(0, 229, 255, 0.24);
+  background: rgba(3, 11, 18, 0.44);
+  box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.045);
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint small {
+  font-size: 9px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint strong {
+  font-size: 11px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint em {
+  font-size: 9px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .hint-wave {
+  width: 23px;
+  height: 18px;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+.voice-confirmation-dock {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  width: min(100%, 560px);
+  margin-top: 2px;
+  color: var(--holo-secondary);
+}
+
+.voice-control-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.voice-confirmation-dock button {
+  min-height: 34px;
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  border-radius: 6px;
+  background: rgba(3, 11, 18, 0.58);
+  color: var(--holo-text);
+  padding: 7px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.06);
+}
+
+.voice-confirmation-dock button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.voice-confirmation-dock .voice-control-primary {
+  border-color: rgba(0, 229, 255, 0.58);
+  color: var(--holo-cyan);
+  box-shadow:
+    inset 0 0 16px rgba(0, 229, 255, 0.12),
+    0 0 14px rgba(0, 229, 255, 0.12);
+}
+
+.voice-manual-entry {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 520px);
+}
+
+.voice-manual-entry textarea {
+  min-height: 58px;
+  resize: vertical;
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.68);
+  color: var(--holo-text);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.voice-control-message {
+  max-width: 520px;
+  margin: 0;
+  color: var(--holo-secondary);
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.voice-confirmation-dock small {
+  color: var(--holo-muted);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .connection-strip {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  align-self: end;
+  justify-self: stretch;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  min-height: 64px;
+  max-height: 84px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .connection-item {
+  grid-template-columns: auto auto auto;
+  justify-content: start;
+  gap: 6px;
+  min-height: 0;
+  padding: 9px 16px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .connection-item span {
+  align-self: center;
+  font-size: 10px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .connection-item i {
+  order: 2;
+  align-self: center;
+  width: 7px;
+  height: 7px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .connection-item strong {
+  order: 3;
+  align-self: center;
+  font-size: 13px;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape .reflection-item {
+  grid-template-columns: auto auto;
+  justify-content: end;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape.reflection-mode .assistant-avatar {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape.reflection-mode .voice-status {
+  grid-column: 1;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape.reflection-mode .project-identity {
+  grid-column: 2;
+}
+
+.hologram-live-page .hologram-preview.hologram-landscape.reflection-mode .reflection-badge {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.debug-page {
+  min-height: 100dvh;
+  overflow: auto;
+}
+
+.debug-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.debug-board .hologram-preview {
+  min-height: 360px;
+}
+
+.debug-footer-preview {
+  margin-top: 20px;
+  border: 1px solid rgba(122, 247, 255, 0.28);
+  border-radius: 9px;
+  background: rgba(3, 11, 18, 0.72);
+  padding: 12px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.debug-footer-preview > .hologram-preview {
+  min-height: 260px;
+}
+
+.footer-wave {
+  height: 34px;
+  background: repeating-linear-gradient(90deg, var(--holo-cyan) 0 2px, transparent 2px 9px);
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+  opacity: 0.82;
+  filter: drop-shadow(0 0 10px var(--holo-cyan));
+}
+
+.debug-footer-preview strong,
+.hologram-auth-message {
+  display: block;
+  color: var(--holo-cyan);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.debug-footer-preview span {
+  display: block;
+  color: var(--holo-secondary);
+  margin-top: 4px;
+}
+
+.hologram-auth-message {
+  border: 1px solid rgba(255, 209, 102, 0.4);
+  border-radius: 8px;
+  background: rgba(255, 209, 102, 0.08);
+  color: var(--holo-warning);
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.debug-token-panel {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+  border: 1px solid rgba(122, 247, 255, 0.24);
+  border-radius: 9px;
+  background: rgba(3, 11, 18, 0.72);
+  padding: 12px 14px;
+}
+
+.debug-token-panel label {
+  display: grid;
+  gap: 5px;
+  min-width: min(100%, 360px);
+  color: var(--holo-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.debug-token-panel button {
+  min-height: 40px;
+  border: 1px solid rgba(0, 229, 255, 0.36);
+  border-radius: 7px;
+  background: rgba(3, 11, 18, 0.72);
+  color: var(--holo-cyan);
+  padding: 8px 14px;
+}
+
+.debug-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  border: 1px solid rgba(122, 247, 255, 0.24);
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.92);
+  padding: 12px 14px;
+}
+
+.debug-controls div,
+.debug-controls label {
+  display: grid;
+  gap: 5px;
+  color: var(--holo-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.debug-controls label {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.debug-controls input {
+  accent-color: var(--holo-cyan);
+}
+
+@keyframes holoSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes holoScanWide {
+  0% { transform: translateY(-90px); opacity: 0; }
+  18%, 80% { opacity: 1; }
+  100% { transform: translateY(92px); opacity: 0; }
+}
+
+@keyframes holoWaveBars {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.45; }
+  50% { transform: scaleY(1.35); opacity: 1; }
+}
+
+@media (max-width: 1180px) {
+  .debug-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .assistant-avatar {
+    width: min(52dvh, 74vw);
+  }
+}
+
+@media (max-width: 760px) {
+  .hologram-root {
+    padding: 12px;
+  }
+
+  .hologram-titlebar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .holo-legend {
+    flex-wrap: wrap;
+  }
+
+  .debug-board {
+    grid-template-columns: 1fr;
+  }
+
+  .connection-strip,
+  .result-box {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .assistant-avatar {
+    min-width: 230px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .hologram-live-page .hologram-preview.hologram-landscape {
+    --landscape-left: minmax(200px, 36%);
+    --landscape-right: minmax(0, 64%);
+    --landscape-gap: clamp(14px, 2.4vw, 28px);
+    --landscape-pad-x: clamp(16px, 2.8vw, 28px);
+    --landscape-pad-y: clamp(12px, 2.2vh, 18px);
+    grid-template-rows: auto minmax(0, 1fr) clamp(52px, 12vh, 64px);
+    row-gap: 8px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity {
+    gap: 2px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity span,
+  .hologram-live-page .hologram-preview.hologram-landscape .reflection-badge span {
+    font-size: 9px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity strong {
+    font-size: 14px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .assistant-avatar {
+    width: min(70vh, 35vw);
+    min-width: 205px;
+    max-width: 356px;
+    margin-left: clamp(10px, 1.5vw, 18px);
+    margin-bottom: 6px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status {
+    gap: 6px;
+    width: min(100%, 430px);
+    max-width: 430px;
+    transform: translateY(12px);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status h2 {
+    font-size: 26px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status > p,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-options > span {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status blockquote,
+  .hologram-live-page .hologram-preview.hologram-landscape .approval-box,
+  .hologram-live-page .hologram-preview.hologram-landscape .result-box,
+  .hologram-live-page .hologram-preview.hologram-landscape .progress-list,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-options {
+    width: min(100%, 420px);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active,
+  .hologram-live-page .hologram-preview.hologram-landscape .approval-box,
+  .hologram-live-page .hologram-preview.hologram-landscape .result-box {
+    padding: 9px 12px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status blockquote {
+    padding: 9px 12px;
+    font-size: 16px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item {
+    min-height: 42px;
+    padding: 6px 9px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item strong {
+    font-size: 11px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item span {
+    font-size: 9px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint {
+    min-width: 124px;
+    padding: 6px 8px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  .hologram-live-page {
+    padding: 10px;
+  }
+
+  .hologram-live-page .hologram-fullscreen {
+    min-height: calc(100dvh - 20px);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape {
+    --landscape-left: minmax(180px, 36%);
+    --landscape-right: minmax(0, 64%);
+    --landscape-gap: 14px;
+    --landscape-pad-x: 14px;
+    --landscape-pad-y: 10px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .reflection-badge {
+    grid-template-columns: 24px auto;
+    gap: 8px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .reflection-badge i {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .assistant-avatar {
+    width: min(66vh, 33vw);
+    min-width: 188px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active span {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status {
+    width: min(100%, 400px);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status h2 {
+    font-size: 24px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item {
+    padding: 5px 8px;
+  }
+}

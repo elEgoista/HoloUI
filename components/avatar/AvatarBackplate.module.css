@@ -1,0 +1,338 @@
+.root {
+  --holo-main: #00e5ff;
+  --holo-soft: rgba(0, 229, 255, 0.32);
+  --holo-dim: rgba(0, 123, 168, 0.13);
+  --holo-state: #00e5ff;
+  --wave-opacity: 0.34;
+  --wave-speed: 2.8s;
+  --ring-speed-a: 28s;
+  --ring-speed-b: 42s;
+  --scan-opacity: 0;
+
+  position: absolute;
+  inset: -3% -22% -3%;
+  z-index: 1;
+  pointer-events: none;
+  color: var(--holo-main);
+  isolation: isolate;
+}
+
+.root[data-state="listening"],
+.root[data-listening="true"],
+.root[data-speaking="true"] {
+  --wave-opacity: 0.68;
+  --wave-speed: 1.05s;
+  --ring-speed-a: 16s;
+  --ring-speed-b: 24s;
+}
+
+.root[data-state="confirm"] {
+  --wave-opacity: 0.46;
+  --holo-soft: rgba(130, 246, 255, 0.36);
+}
+
+.root[data-state="running"] {
+  --wave-opacity: 0.72;
+  --wave-speed: 0.72s;
+  --ring-speed-a: 9s;
+  --ring-speed-b: 14s;
+  --scan-opacity: 0.62;
+}
+
+.root[data-state="approval"],
+.root[data-state="result-warning"] {
+  --holo-state: #ffc83d;
+  --holo-soft: rgba(255, 200, 61, 0.28);
+}
+
+.root[data-state="result-success"] {
+  --holo-state: #39f58e;
+  --holo-soft: rgba(57, 245, 142, 0.25);
+}
+
+.root[data-state="result-error"] {
+  --holo-state: #ff5f73;
+  --holo-soft: rgba(255, 95, 115, 0.27);
+  --scan-opacity: 0.28;
+}
+
+.mirrored {
+  transform: scaleX(-1);
+}
+
+.coreGlow {
+  position: absolute;
+  inset: 18% 25% 14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.22), transparent 9%),
+    radial-gradient(circle at 50% 43%, var(--holo-soft), transparent 32%),
+    radial-gradient(circle at 50% 72%, var(--holo-dim), transparent 46%);
+  filter: blur(10px);
+  opacity: 0.72;
+  animation: backplateGlow 4.2s ease-in-out infinite;
+}
+
+.outerRing,
+.midRing,
+.innerRing,
+.arcA,
+.arcB {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.outerRing {
+  inset: 10% 17% 12%;
+  background:
+    conic-gradient(from 18deg, transparent 0 8deg, color-mix(in srgb, var(--holo-state), transparent 18%) 8deg 13deg, transparent 13deg 42deg, rgba(0, 229, 255, 0.45) 42deg 47deg, transparent 47deg 118deg, color-mix(in srgb, var(--holo-state), transparent 28%) 118deg 124deg, transparent 124deg 226deg, rgba(0, 229, 255, 0.32) 226deg 232deg, transparent 232deg 360deg);
+  mask: radial-gradient(circle, transparent 58%, #000 59% 61%, transparent 62%);
+  opacity: 0.82;
+  animation: ringRotate var(--ring-speed-a) linear infinite;
+}
+
+.midRing {
+  inset: 18% 24% 20%;
+  border: 1px dashed rgba(0, 229, 255, 0.34);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.11);
+  animation: ringRotateReverse var(--ring-speed-b) linear infinite;
+}
+
+.innerRing {
+  inset: 27% 33% 29%;
+  background:
+    conic-gradient(from 122deg, transparent 0 36deg, rgba(234, 255, 255, 0.42) 36deg 39deg, transparent 39deg 126deg, var(--holo-state) 126deg 130deg, transparent 130deg 250deg, rgba(0, 229, 255, 0.3) 250deg 255deg, transparent 255deg 360deg);
+  mask: radial-gradient(circle, transparent 64%, #000 65% 68%, transparent 69%);
+  opacity: 0.72;
+  animation: ringRotate 18s linear infinite;
+}
+
+.arcA {
+  inset: 4% 10% 16%;
+  border-top: 1px solid rgba(0, 229, 255, 0.46);
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  transform: rotate(-11deg);
+  opacity: 0.52;
+}
+
+.arcB {
+  inset: 20% 18% 8%;
+  border-bottom: 1px solid color-mix(in srgb, var(--holo-state), transparent 26%);
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  transform: rotate(17deg);
+  opacity: 0.48;
+}
+
+.waveform {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 19%;
+  height: 54%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 0.45vw, 6px);
+  opacity: var(--wave-opacity);
+  mask-image: radial-gradient(ellipse at center, transparent 0 19%, rgba(0, 0, 0, 0.28) 28%, #000 44%, transparent 83%);
+}
+
+.waveform i {
+  width: clamp(1px, 0.16vw, 3px);
+  height: var(--bar-height);
+  min-height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, var(--holo-state), #dfffff, var(--holo-state), transparent);
+  box-shadow: 0 0 10px var(--holo-soft);
+  transform-origin: center;
+  animation: waveformPulse var(--wave-speed) ease-in-out infinite;
+  animation-delay: calc(var(--bar-index) * -47ms);
+}
+
+.alignmentHorizontal,
+.alignmentVertical {
+  position: absolute;
+  opacity: 0.34;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.42));
+}
+
+.alignmentHorizontal {
+  left: 9%;
+  right: 9%;
+  top: 47%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.42), transparent 43%, transparent 57%, rgba(0, 229, 255, 0.42), transparent);
+}
+
+.alignmentVertical {
+  top: 13%;
+  bottom: 12%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(0, 229, 255, 0.28), transparent);
+}
+
+.cornerA,
+.cornerB,
+.cornerC,
+.cornerD {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  opacity: 0.34;
+}
+
+.cornerA {
+  left: 16%;
+  top: 22%;
+  border-left: 1px solid var(--holo-main);
+  border-top: 1px solid var(--holo-main);
+}
+
+.cornerB {
+  right: 16%;
+  top: 22%;
+  border-right: 1px solid var(--holo-main);
+  border-top: 1px solid var(--holo-main);
+}
+
+.cornerC {
+  left: 17%;
+  bottom: 18%;
+  border-left: 1px solid color-mix(in srgb, var(--holo-state), transparent 12%);
+  border-bottom: 1px solid color-mix(in srgb, var(--holo-state), transparent 12%);
+}
+
+.cornerD {
+  right: 17%;
+  bottom: 18%;
+  border-right: 1px solid color-mix(in srgb, var(--holo-state), transparent 12%);
+  border-bottom: 1px solid color-mix(in srgb, var(--holo-state), transparent 12%);
+}
+
+.markers i,
+.particles i {
+  position: absolute;
+  left: var(--marker-x, var(--particle-x));
+  top: var(--marker-y, var(--particle-y));
+}
+
+.markers i {
+  width: 18px;
+  height: 18px;
+  border: 1px solid color-mix(in srgb, var(--holo-state), transparent 18%);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--holo-soft), inset 0 0 8px rgba(0, 229, 255, 0.12);
+  transform: translate(-50%, -50%);
+}
+
+.markers i::before,
+.markers i::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.markers i::before {
+  left: 50%;
+  top: -5px;
+  width: 1px;
+  height: 7px;
+}
+
+.markers i::after {
+  left: -5px;
+  top: 50%;
+  width: 7px;
+  height: 1px;
+}
+
+.particles i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--holo-main);
+  box-shadow: 0 0 8px var(--holo-main);
+  opacity: 0.42;
+  animation: particleFlicker 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--particle-index) * -91ms);
+}
+
+.scanSweep {
+  position: absolute;
+  inset: 13% 21% 9%;
+  background: linear-gradient(90deg, transparent 0 46%, rgba(255, 255, 255, 0.6) 50%, transparent 54% 100%);
+  opacity: var(--scan-opacity);
+  filter: drop-shadow(0 0 14px var(--holo-state));
+  animation: scanSweep 1.7s ease-in-out infinite;
+}
+
+.stateNode {
+  position: absolute;
+  right: 22%;
+  bottom: 24%;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--holo-state);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 18px var(--holo-soft), inset 0 0 12px var(--holo-dim);
+}
+
+.root[data-state="approval"] .stateNode,
+.root[data-state="result-success"] .stateNode,
+.root[data-state="result-warning"] .stateNode,
+.root[data-state="result-error"] .stateNode {
+  opacity: 0.86;
+  animation: statePulse 1.8s ease-in-out infinite;
+}
+
+.static,
+.static * {
+  animation-play-state: paused !important;
+}
+
+@keyframes ringRotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ringRotateReverse {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes backplateGlow {
+  0%, 100% { opacity: 0.5; transform: scale(0.98); }
+  50% { opacity: 0.82; transform: scale(1.018); }
+}
+
+@keyframes waveformPulse {
+  0%, 100% { transform: scaleY(0.72); opacity: 0.48; }
+  50% { transform: scaleY(1.18); opacity: 1; }
+}
+
+@keyframes particleFlicker {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 0.78; transform: scale(1.15); }
+}
+
+@keyframes scanSweep {
+  0% { transform: translateX(-34%); opacity: 0; }
+  24%, 72% { opacity: var(--scan-opacity); }
+  100% { transform: translateX(34%); opacity: 0; }
+}
+
+@keyframes statePulse {
+  0%, 100% { transform: scale(0.96); opacity: 0.54; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root * {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

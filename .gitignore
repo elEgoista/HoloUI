@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+config.local.json
+.DS_Store
+.tmp-tests/
+*.log
+.env*
+/avatar-*.jpeg
+/avatar-*.png.jpeg
