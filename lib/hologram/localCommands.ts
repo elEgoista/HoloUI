@@ -95,13 +95,26 @@ export async function getGitStatus(projectPath: string) {
 
 export async function getGitDiffStat(projectPath: string) {
   const cwd = assertUsableProjectPath(projectPath);
-  const { stdout } = await execFileAsync("git", ["diff", "--stat"], {
-    cwd,
-    timeout: 5000,
-    maxBuffer
-  });
+  const [{ stdout: diffStdout }, { stdout: statusStdout }] = await Promise.all([
+    execFileAsync("git", ["diff", "--stat"], {
+      cwd,
+      timeout: 5000,
+      maxBuffer
+    }),
+    execFileAsync("git", ["status", "--short"], {
+      cwd,
+      timeout: 5000,
+      maxBuffer
+    })
+  ]);
+  const untrackedFiles = statusStdout
+    .split("\n")
+    .map((line) => line.trimEnd())
+    .filter((line) => line.startsWith("?? "))
+    .map((line) => `${line.slice(3).trim()} | untracked`);
+  const sections = [diffStdout.trim(), ...untrackedFiles].filter(Boolean);
 
-  return stdout.trim() || "No unstaged diff.";
+  return sections.length ? sections.join("\n") : "No working tree diff.";
 }
 
 export async function getGitSummary(project: ProjectConfig): Promise<GitSummary> {

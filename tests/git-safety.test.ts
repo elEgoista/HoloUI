@@ -5,7 +5,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import test from "node:test";
 import { getPublicProjectsWithGit } from "../lib/hologram/config";
-import { getProjectGitInfo } from "../lib/hologram/localCommands";
+import { getGitDiffStat, getProjectGitInfo } from "../lib/hologram/localCommands";
 import {
   getCodexCliGitSafety,
   nonGitSafetyError
@@ -53,6 +53,20 @@ test("git detection reports initialized git repositories", async () => {
     assert.equal(info.isGitRepo, true);
     assert.equal(info.gitStatusAvailable, true);
     assert.equal(info.gitRoot, fs.realpathSync(dir));
+  } finally {
+    cleanup(dir);
+  }
+});
+
+test("git diff stat includes untracked files", async () => {
+  const dir = makeTempDir("git-untracked");
+
+  try {
+    execFileSync("git", ["init"], { cwd: dir, stdio: "ignore" });
+    fs.writeFileSync(path.join(dir, "new-file.md"), "# New file\n");
+
+    const diffStat = await getGitDiffStat(dir);
+    assert.match(diffStat, /new-file\.md \| untracked/);
   } finally {
     cleanup(dir);
   }

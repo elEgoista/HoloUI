@@ -51,7 +51,7 @@ function parseGitStatus(status: string): ChangedFile[] {
     .map((line) => {
       const code = line.slice(0, 2);
       const filePath = line.slice(3).trim() || line.trim();
-      const statusCode = code.includes("A")
+      const statusCode = code === "??" || code.includes("A")
         ? "added"
         : code.includes("D")
           ? "deleted"
@@ -346,7 +346,7 @@ export class CodexCliRunnerAdapter implements RunnerAdapter {
         : Promise.resolve(null)
     ]);
     const tests = testResult ? parseTestSummary(testResult) : undefined;
-    const diffExists = Boolean(diffStat && diffStat !== "No unstaged diff." && !diffStat.startsWith("unavailable"));
+    const diffExists = Boolean(diffStat && diffStat !== "No working tree diff." && !diffStat.startsWith("unavailable"));
     const testsFailed = Boolean(tests?.failed);
     const success = exitCode === 0 && !testsFailed;
     const summary = codexSummary(exitCode, stdout, stderr);
