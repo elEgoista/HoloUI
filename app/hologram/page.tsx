@@ -45,6 +45,19 @@ declare global {
 }
 
 type VoicePhase = "idle" | "listening_task" | "confirming" | "listening_confirm" | "unsupported" | "error";
+type HologramContextPhase = "wakeup" | "projectChatPicker" | "chatContext";
+
+function makeProjectChats(projectName: string, branchName?: string): HologramRuntimeState["projectChats"] {
+  return [
+    {
+      id: "default",
+      name: projectName,
+      source: "Codex",
+      detail: branchName ?? "main",
+      recent: "now"
+    }
+  ];
+}
 
 function mapTaskToHologramState(
   task: AgentTask | null,
@@ -82,9 +95,12 @@ function mapTaskToHologramState(
       voice: { mic: "processing", voiceControl: "active" },
       progressSteps,
       availableVoiceCommands: [
-        { id: "details", phrase: "Show details", tone: "primary" },
-        { id: "cancel", phrase: "Cancel task" }
+        { id: "progress", phrase: "show progress", tone: "primary" },
+        { id: "task-list", phrase: "open task list" },
+        { id: "errors", phrase: "show errors" },
+        { id: "last-file", phrase: "open last file", tone: "warning" }
       ],
+      backgroundEvents: [],
       connection
     };
   }
@@ -101,12 +117,12 @@ function mapTaskToHologramState(
         risk: task.approvalRequest.description
       },
       availableVoiceCommands: [
-        { id: "once", phrase: "Approve once", tone: "warning" },
-        { id: "session", phrase: "Approve session", tone: "warning" },
-        { id: "decline", phrase: "Decline", tone: "error" },
-        { id: "risk", phrase: "Explain risk" }
+        { id: "once", phrase: "approve once", tone: "warning" },
+        { id: "session", phrase: "approve session", tone: "warning" },
+        { id: "details", phrase: "view details" },
+        { id: "skip", phrase: "skip approval", tone: "error" }
       ],
-      connection
+      connection: { ...connection, railStatus: "approval needed" }
     };
   }
 
@@ -126,22 +142,20 @@ function mapTaskToHologramState(
       },
       availableVoiceCommands: [
         { id: "details", phrase: "Show details" },
-        { id: "new", phrase: "Start new task", tone: "primary" }
+        { id: "new", phrase: "start next task", tone: "primary" },
+        { id: "project", phrase: "go to project" }
       ],
       connection: { ...connection, codex: "error" }
     };
   }
 
   if (task.status === "review" || task.status === "completed") {
-    const voiceCommands: VoiceOption[] =
-      task.nextActions?.map((action) => ({
-        id: action.id,
-        phrase: action.label,
-        tone: action.kind === "ask_to_fix" ? "warning" : "primary"
-      })) ?? [
-        { id: "commit", phrase: "Commit summary", tone: "primary" },
-        { id: "new", phrase: "Start new task" }
-      ];
+    const voiceCommands: VoiceOption[] = [
+      { id: "commit", phrase: "commit summary", tone: "primary" },
+      { id: "diff", phrase: "open diff" },
+      { id: "new", phrase: "start next task" },
+      { id: "project", phrase: "go to project" }
+    ];
 
     return {
       agentState: "result",
@@ -157,6 +171,7 @@ function mapTaskToHologramState(
         summary: task.summary
       },
       availableVoiceCommands: voiceCommands,
+      runningTasksCount: 0,
       connection
     };
   }
@@ -171,6 +186,7 @@ function mapTaskToHologramState(
 
 export default function HologramPage() {
   const [task, setTask] = useState<AgentTask | null>(null);
+  const [contextPhase, setContextPhase] = useState<HologramContextPhase>("wakeup");
   const [projectName, setProjectName] = useState("Marketplace Agent");
   const [branchName, setBranchName] = useState("feature/hologram-ui");
   const [authBlocked, setAuthBlocked] = useState(false);
@@ -252,6 +268,13 @@ export default function HologramPage() {
 
       const cleanTranscript = normalizeVoiceTranscript(draftTranscript);
       const base = mapTaskToHologramState(null, projectName, branchName);
+      const contextBase = {
+        ...base,
+        projectChats: makeProjectChats(projectName, branchName),
+        sourceName: `Codex / ${branchName}`,
+        lastMessage: "Ready for the next Codex task.",
+        lastMessageTime: "now"
+      };
 
       if (voicePhase === "listening_task") {
         return {
@@ -292,7 +315,8 @@ export default function HologramPage() {
 
       if (voicePhase === "unsupported" || voicePhase === "error") {
         return {
-          ...base,
+          ...contextBase,
+          agentState: contextPhase === "wakeup" ? "wakeup" : contextPhase,
           voice: {
             mic: voicePhase === "error" ? "error" : "muted",
             wakeWord: "Codex",
@@ -301,15 +325,54 @@ export default function HologramPage() {
         };
       }
 
-      return base;
+      if (contextPhase === "projectChatPicker") {
+        return {
+          ...contextBase,
+          agentState: "projectChatPicker" as const,
+          projectName: "none",
+          connection: { ...contextBase.connection, project: "none" as const },
+          availableVoiceCommands: [
+            { id: "first", phrase: "open first", tone: "primary" as const },
+            { id: "current", phrase: projectName.toLowerCase() },
+            { id: "new-chat", phrase: "new chat" },
+            { id: "new-project", phrase: "new project" }
+          ]
+        };
+      }
+
+      if (contextPhase === "chatContext") {
+        return {
+          ...contextBase,
+          agentState: "chatContext" as const,
+          availableVoiceCommands: [
+            { id: "continue", phrase: "continue this task", tone: "primary" as const },
+            { id: "new-task", phrase: "new task" },
+            { id: "recent", phrase: "show recent" },
+            { id: "project", phrase: "go to project" }
+          ]
+        };
+      }
+
+      return {
+        ...contextBase,
+        agentState: "wakeup" as const,
+        projectName: "none",
+        connection: { ...contextBase.connection, project: "none" as const },
+        availableVoiceCommands: [
+          { id: "open-project", phrase: "open project", tone: "primary" as const },
+          { id: "task-list", phrase: "open task list" },
+          { id: "active-chat", phrase: "show active chat" }
+        ]
+      };
     },
-    [branchName, draftTranscript, manualPrompt, projectName, task, voicePhase]
+    [branchName, contextPhase, draftTranscript, manualPrompt, projectName, task, voicePhase]
   );
 
   const cancelVoiceFlow = useCallback(() => {
     recognitionRef.current?.abort();
     setDraftTranscript("");
     setManualPrompt("");
+    setContextPhase("chatContext");
     setVoicePhase(voiceSupported ? "idle" : "unsupported");
     setVoiceMessage(voiceSupported ? "Voice command cancelled." : "Manual command cancelled.");
   }, [voiceSupported]);
@@ -427,6 +490,11 @@ export default function HologramPage() {
     recognition.start();
   }, [cancelVoiceFlow, submitVoiceTask]);
 
+  const openProjectContext = useCallback(() => {
+    setContextPhase("chatContext");
+    setVoicePhase(voiceSupported ? "idle" : "unsupported");
+  }, [voiceSupported]);
+
   const voiceControls = (
     <div className="voice-confirmation-dock">
       <div className="voice-control-actions">
@@ -444,11 +512,21 @@ export default function HologramPage() {
           </>
         ) : (
           <>
+            {contextPhase === "wakeup" ? (
+              <button className="voice-control-primary" type="button" onClick={() => setContextPhase("projectChatPicker")}>
+                Wake up
+              </button>
+            ) : null}
+            {contextPhase === "projectChatPicker" ? (
+              <button className="voice-control-primary" type="button" onClick={openProjectContext}>
+                Open context
+              </button>
+            ) : null}
             <button
               className="voice-control-primary"
               type="button"
               onClick={() => startRecognition("task")}
-              disabled={Boolean(task)}
+              disabled={Boolean(task) || contextPhase === "wakeup" || contextPhase === "projectChatPicker"}
             >
               Start voice
             </button>

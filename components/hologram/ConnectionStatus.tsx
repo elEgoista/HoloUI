@@ -31,9 +31,9 @@ export function ConnectionStatus({
         </div>
       ))}
       {showReflection ? (
-        <div className="connection-item reflection-item tone-voice">
-          <span>Reflection</span>
-          <strong>{reflection ? "ON" : "OFF"}</strong>
+        <div className={`connection-item reflection-item ${connection.railStatus === "approval needed" ? "tone-warning" : "tone-voice"}`}>
+          <span>{connection.railStatus === "approval needed" ? "Approval" : "Reflection"}</span>
+          <strong>{connection.railStatus === "approval needed" ? "NEEDED" : reflection ? "ON" : "OFF"}</strong>
         </div>
       ) : null}
     </div>

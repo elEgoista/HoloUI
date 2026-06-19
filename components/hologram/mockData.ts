@@ -6,17 +6,60 @@ const baseConnection: HologramRuntimeState["connection"] = {
   project: "active"
 };
 
+const noProjectConnection: HologramRuntimeState["connection"] = {
+  ...baseConnection,
+  project: "none"
+};
+
 export const defaultTranscript =
   "Create the hologram debug page and add all assistant states.";
 
 export const hologramStates: HologramRuntimeState[] = [
   {
-    agentState: "idle",
+    agentState: "wakeup",
     projectName: "HoloCodex Deck",
     branchName: "feature/hologram-ui",
     voice: { mic: "idle", wakeWord: "Codex", voiceControl: "active" },
     availableVoiceCommands: [
-      { id: "wake", phrase: "Codex", description: "wake up", tone: "primary" }
+      { id: "open-project", phrase: "open project", tone: "primary" },
+      { id: "task-list", phrase: "open task list" },
+      { id: "active-chat", phrase: "show active chat" }
+    ],
+    connection: noProjectConnection
+  },
+  {
+    agentState: "projectChatPicker",
+    projectName: "none",
+    branchName: "main",
+    projectChats: [
+      { id: "holocodex", name: "HoloCodex Deck", source: "Codex", detail: "work/holocodex-v1", recent: "2m ago" },
+      { id: "marketplace", name: "Marketplace Agent", source: "HoloCodex", detail: "main", recent: "15m ago" },
+      { id: "visa", name: "VisaDays", source: "HoloCodex", detail: "dev/ops", recent: "1h ago" },
+      { id: "parser", name: "Parser Service", source: "Order", detail: "v2/parser-stream", recent: "3h ago" }
+    ],
+    voice: { mic: "idle", wakeWord: "Codex", voiceControl: "active" },
+    availableVoiceCommands: [
+      { id: "first", phrase: "open first", tone: "primary" },
+      { id: "marketplace", phrase: "marketplace agent" },
+      { id: "filter", phrase: "filter Codex" },
+      { id: "new-chat", phrase: "new chat" },
+      { id: "new-project", phrase: "new project" }
+    ],
+    connection: noProjectConnection
+  },
+  {
+    agentState: "chatContext",
+    projectName: "HoloCodex Deck",
+    branchName: "features/hologram-ui",
+    sourceName: "Codex / features/hologram-ui",
+    lastMessage: "Implement /hologram/debug with all assistant states.",
+    lastMessageTime: "2m ago",
+    voice: { mic: "idle", wakeWord: "Codex", voiceControl: "active" },
+    availableVoiceCommands: [
+      { id: "continue", phrase: "continue this task", tone: "primary" },
+      { id: "new-task", phrase: "new task" },
+      { id: "recent", phrase: "show recent" },
+      { id: "project", phrase: "go to project" }
     ],
     connection: baseConnection
   },
@@ -59,11 +102,35 @@ export const hologramStates: HologramRuntimeState[] = [
       { label: "Analyzing files...", status: "done" },
       { label: "Editing components...", status: "active" },
       { label: "Running tests...", status: "pending" },
-      { label: "Waiting review...", status: "pending" }
+      { label: "Finalizing", status: "pending" }
+    ],
+    backgroundEvents: [
+      {
+        id: "marketplace-complete",
+        source: "codex",
+        projectId: "marketplace",
+        title: "Marketplace Agent completed",
+        type: "taskCompleted",
+        message: "Say marketplace agent to switch",
+        tone: "success",
+        voiceCommands: [{ id: "marketplace", phrase: "marketplace agent" }]
+      },
+      {
+        id: "visa-approval",
+        source: "holocode",
+        projectId: "visa",
+        title: "VisaDays needs approval",
+        type: "approvalNeeded",
+        message: "Say visa days to switch",
+        tone: "warning",
+        voiceCommands: [{ id: "visa", phrase: "visa days" }]
+      }
     ],
     availableVoiceCommands: [
-      { id: "details", phrase: "Show details", tone: "primary" },
-      { id: "cancel", phrase: "Cancel task" }
+      { id: "progress", phrase: "show progress", tone: "primary" },
+      { id: "task-list", phrase: "open task list" },
+      { id: "errors", phrase: "show errors" },
+      { id: "last-file", phrase: "open last file", tone: "warning" }
     ],
     connection: { ...baseConnection, codex: "busy" }
   },
@@ -80,10 +147,10 @@ export const hologramStates: HologramRuntimeState[] = [
     availableVoiceCommands: [
       { id: "once", phrase: "Approve once", tone: "warning" },
       { id: "session", phrase: "Approve session", tone: "warning" },
-      { id: "decline", phrase: "Decline", tone: "error" },
-      { id: "risk", phrase: "Explain risk" }
+      { id: "details", phrase: "View details" },
+      { id: "skip", phrase: "Skip approval", tone: "error" }
     ],
-    connection: { ...baseConnection, codex: "busy" }
+    connection: { ...baseConnection, codex: "busy", railStatus: "approval needed" }
   },
   {
     agentState: "result",
@@ -99,8 +166,10 @@ export const hologramStates: HologramRuntimeState[] = [
       summary: "Hologram prototype is ready for integration."
     },
     availableVoiceCommands: [
-      { id: "commit", phrase: "Commit summary", tone: "primary" },
-      { id: "new", phrase: "Start new task" }
+      { id: "commit", phrase: "commit summary", tone: "primary" },
+      { id: "diff", phrase: "open diff" },
+      { id: "new", phrase: "start next task" },
+      { id: "project", phrase: "go to project" }
     ],
     connection: baseConnection
   }

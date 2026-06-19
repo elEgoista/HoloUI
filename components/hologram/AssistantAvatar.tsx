@@ -6,6 +6,9 @@ function mapHologramAvatarState(
   state: HologramAgentState,
   resultStatus?: HologramResultStatus
 ): HoloAvatarState {
+  if (state === "wakeup" || state === "projectChatPicker" || state === "chatContext" || state === "idle") {
+    return "idle";
+  }
   if (state !== "result") return state;
   if (resultStatus === "success") return "result-success";
   if (resultStatus === "failed") return "result-error";

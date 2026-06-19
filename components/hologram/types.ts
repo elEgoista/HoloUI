@@ -1,4 +1,7 @@
 export type HologramAgentState =
+  | "wakeup"
+  | "projectChatPicker"
+  | "chatContext"
   | "idle"
   | "listening"
   | "confirm"
@@ -23,6 +26,27 @@ export type VoiceOption = {
   tone?: "default" | "primary" | "warning" | "error";
 };
 
+export type HologramBackgroundEventType =
+  | "taskCompleted"
+  | "approvalNeeded"
+  | "taskFailed"
+  | "taskProgress";
+
+export type HologramBackgroundEvent = {
+  id: string;
+  source: "codex" | "holocode" | "local";
+  projectId: string;
+  chatId?: string;
+  title: string;
+  type: HologramBackgroundEventType;
+  message: string;
+  tone: "default" | "success" | "warning" | "error";
+  voiceCommands: Array<{
+    id: string;
+    phrase: string;
+  }>;
+};
+
 export type ProgressStep = {
   label: string;
   status: "pending" | "active" | "done" | "failed";
@@ -33,6 +57,19 @@ export type HologramRuntimeState = {
   resultStatus?: HologramResultStatus;
   projectName: string;
   branchName?: string;
+  sourceName?: string;
+  chatName?: string;
+  lastMessage?: string;
+  lastMessageTime?: string;
+  projectChats?: Array<{
+    id: string;
+    name: string;
+    source: string;
+    detail: string;
+    recent: string;
+  }>;
+  backgroundEvents?: HologramBackgroundEvent[];
+  runningTasksCount?: number;
   currentTask?: string;
   transcript?: string;
   voice: VoiceRuntimeState;
@@ -52,6 +89,7 @@ export type HologramRuntimeState = {
   connection: {
     bridge: "connected" | "reconnecting" | "offline";
     codex: "ready" | "busy" | "offline" | "error";
-    project: "active" | "missing" | "unknown";
+    project: "active" | "missing" | "unknown" | "none";
+    railStatus?: "approval needed" | "ready" | "off" | "on";
   };
 };
