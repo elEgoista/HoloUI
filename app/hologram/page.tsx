@@ -96,7 +96,7 @@ function mapTaskToHologramState(
       progressSteps,
       availableVoiceCommands: [
         { id: "progress", phrase: "show progress", tone: "primary" },
-        { id: "task-list", phrase: "open task list" },
+        { id: "task-list", phrase: "switch task" },
         { id: "errors", phrase: "show errors" },
         { id: "last-file", phrase: "open last file", tone: "warning" }
       ],
@@ -120,7 +120,7 @@ function mapTaskToHologramState(
         { id: "once", phrase: "approve once", tone: "warning" },
         { id: "session", phrase: "approve session", tone: "warning" },
         { id: "details", phrase: "view details" },
-        { id: "skip", phrase: "skip approval", tone: "error" }
+        { id: "skip", phrase: "decline", tone: "error" }
       ],
       connection: { ...connection, railStatus: "approval needed" }
     };
@@ -306,9 +306,9 @@ export default function HologramPage() {
             voiceControl: "active" as const
           },
           availableVoiceCommands: [
-            { id: "confirm", phrase: "Confirm", tone: "primary" as const },
+            { id: "confirm", phrase: "Send to Codex", tone: "primary" as const },
             { id: "cancel", phrase: "Cancel", tone: "error" as const },
-            { id: "edit", phrase: "Edit", tone: "warning" as const }
+            { id: "edit", phrase: "Edit command", tone: "warning" as const }
           ]
         };
       }
@@ -332,8 +332,7 @@ export default function HologramPage() {
           projectName: "none",
           connection: { ...contextBase.connection, project: "none" as const },
           availableVoiceCommands: [
-            { id: "first", phrase: "open first", tone: "primary" as const },
-            { id: "current", phrase: projectName.toLowerCase() },
+            { id: "first", phrase: projectName, tone: "primary" as const },
             { id: "new-chat", phrase: "new chat" },
             { id: "new-project", phrase: "new project" }
           ]
@@ -358,11 +357,7 @@ export default function HologramPage() {
         agentState: "wakeup" as const,
         projectName: "none",
         connection: { ...contextBase.connection, project: "none" as const },
-        availableVoiceCommands: [
-          { id: "open-project", phrase: "open project", tone: "primary" as const },
-          { id: "task-list", phrase: "open task list" },
-          { id: "active-chat", phrase: "show active chat" }
-        ]
+        availableVoiceCommands: []
       };
     },
     [branchName, contextPhase, draftTranscript, manualPrompt, projectName, task, voicePhase]

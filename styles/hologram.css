@@ -991,6 +991,10 @@
   text-align: left;
 }
 
+.voice-chatContext .chat-context-panel dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .chat-context-panel dt {
   margin-bottom: 5px;
   font-size: 10px;
@@ -1271,6 +1275,38 @@
   gap: 18px;
 }
 
+.debug-state-links {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px 18px;
+  margin: 16px 0 20px;
+  border-block: 1px solid rgba(122, 247, 255, 0.16);
+  padding: 10px 0;
+}
+
+.debug-state-links a {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--holo-secondary);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.debug-state-links a:hover,
+.debug-state-links a:focus-visible {
+  color: var(--holo-cyan);
+}
+
+.debug-state-links a span {
+  flex: 0 0 auto;
+  color: var(--holo-cyan);
+  font-size: 11px;
+}
+
 .debug-board .hologram-preview {
   min-height: 360px;
 }
@@ -1408,6 +1444,10 @@
   .assistant-avatar {
     width: min(52dvh, 74vw);
   }
+
+  .debug-state-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -1425,6 +1465,10 @@
   }
 
   .debug-board {
+    grid-template-columns: 1fr;
+  }
+
+  .debug-state-links {
     grid-template-columns: 1fr;
   }
 
@@ -1571,5 +1615,583 @@
 
   .hologram-live-page .hologram-preview.hologram-landscape .connection-item {
     padding: 5px 8px;
+  }
+}
+
+/* Eight-state compact rendering for the HoloBox phone viewport. */
+.last-message-card blockquote,
+.voice-confirm blockquote,
+.result-box p,
+.background-event span,
+.background-event em {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.last-message-card blockquote,
+.result-box p {
+  -webkit-line-clamp: 2;
+}
+
+.voice-confirm blockquote {
+  -webkit-line-clamp: 3;
+}
+
+.background-event span,
+.background-event em {
+  -webkit-line-clamp: 1;
+}
+
+.result-box {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.result-metric {
+  min-width: 0;
+}
+
+.approval-box > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.approval-box > div > span,
+.approval-box > p > span {
+  color: var(--holo-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.approval-box > p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+
+.hologram-compact .assistant-avatar {
+  width: min(230px, 68%);
+  min-width: 0;
+  max-width: 230px;
+}
+
+.hologram-compact .voice-status,
+.hologram-compact .voice-options,
+.hologram-compact .project-chat-list,
+.hologram-compact .chat-context-panel,
+.hologram-compact .running-layout,
+.hologram-compact .approval-box,
+.hologram-compact .result-box {
+  min-width: 0;
+  max-width: calc(100% - 24px);
+}
+
+.hologram-compact .voice-status {
+  width: calc(100% - 24px);
+  margin: -8px auto 8px;
+}
+
+.hologram-compact .voice-status h2 {
+  max-width: 100%;
+  font-size: clamp(22px, 2.5vw, 32px);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.hologram-compact .project-chat-row {
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  min-height: 42px;
+  padding: 6px 8px;
+}
+
+.hologram-compact .project-chat-row b {
+  display: none;
+}
+
+.hologram-compact .running-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hologram-compact .holo-command-hint {
+  min-width: 126px;
+  max-width: 100%;
+}
+
+.hologram-compact .connection-strip {
+  margin-inline: 10px;
+}
+
+.hologram-compact .connection-item {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 6px;
+  min-width: 0;
+  padding: 6px 8px;
+}
+
+.hologram-compact .connection-item span {
+  grid-column: 1 / -1;
+  font-size: 10px;
+}
+
+.hologram-compact .connection-item i {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.hologram-compact .connection-item strong {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.debug-board .hologram-preview {
+  grid-template-rows: minmax(210px, 240px) auto 48px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.debug-board .voice-status {
+  align-self: start;
+}
+
+.debug-board .connection-strip {
+  align-self: end;
+}
+
+@media (orientation: landscape) and (max-height: 430px) and (min-width: 600px) {
+  .hologram-live-page {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding: 6px;
+  }
+
+  .hologram-live-page .hologram-fullscreen {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape {
+    --landscape-left: minmax(210px, 34%);
+    --landscape-right: minmax(0, 66%);
+    --landscape-gap: 12px;
+    --landscape-pad-x: 10px;
+    --landscape-pad-y: 6px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: var(--landscape-left) var(--landscape-right);
+    grid-template-rows: 28px minmax(0, 1fr) 42px;
+    row-gap: 4px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup {
+    grid-template-columns: var(--landscape-left) var(--landscape-right);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .preview-meta {
+    grid-template-columns: var(--landscape-left) var(--landscape-right);
+    min-height: 0;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup .preview-meta {
+    grid-template-columns: var(--landscape-left) var(--landscape-right);
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity span:first-of-type,
+  .hologram-live-page .hologram-preview.hologram-landscape .project-identity strong {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .reflection-badge {
+    display: none;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .assistant-avatar,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup .assistant-avatar {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+    justify-self: center;
+    width: min(62vh, 30vw);
+    min-width: 0;
+    max-width: 224px;
+    margin: 0;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup .assistant-avatar {
+    width: min(68vh, 32vw);
+    max-width: 246px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup .voice-status {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: stretch;
+    align-content: center;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-wakeup .voice-status {
+    gap: 10px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status h2,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-projectChatPicker .voice-status h2,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-chatContext .voice-status h2 {
+    max-width: 100%;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status > p,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-options > span,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active span,
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active strong {
+    font-size: 12px;
+    line-height: 1.1;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-active {
+    width: min(100%, 400px);
+    min-height: 42px;
+    gap: 10px;
+    padding: 6px 12px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .mic-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-status blockquote {
+    width: min(100%, 440px);
+    max-height: 58px;
+    padding: 7px 12px;
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .target-row {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-options {
+    width: min(100%, 440px);
+    gap: 3px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-option-row {
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint {
+    min-width: 0;
+    min-height: 38px;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 1px 6px;
+    padding: 4px 7px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint small,
+  .hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint strong {
+    font-size: 12px;
+    line-height: 1.05;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .holo-command-hint em {
+    display: none;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .hint-wave {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .voice-confirmation-dock {
+    width: min(100%, 440px);
+    gap: 3px;
+    margin: 0;
+  }
+
+  .hologram-live-page .voice-control-actions {
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .hologram-live-page .voice-confirmation-dock button {
+    min-height: 28px;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .hologram-live-page .voice-confirmation-dock > small {
+    display: none;
+  }
+
+  .hologram-live-page .voice-control-message {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .voice-manual-entry {
+    gap: 4px;
+  }
+
+  .hologram-live-page .voice-manual-entry textarea {
+    min-height: 42px;
+    max-height: 42px;
+    resize: none;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .hologram-live-page .voice-status:has(.voice-manual-entry) .voice-options {
+    display: none;
+  }
+
+  .hologram-live-page .state-wakeup .voice-control-actions button:disabled,
+  .hologram-live-page .state-projectChatPicker .voice-control-actions button:disabled,
+  .hologram-live-page .state-wakeup .voice-control-actions button:not(.voice-control-primary),
+  .hologram-live-page .state-projectChatPicker .voice-control-actions button:not(.voice-control-primary) {
+    display: none;
+  }
+
+  .hologram-live-page .state-listening .voice-control-actions,
+  .hologram-live-page .state-running .voice-confirmation-dock,
+  .hologram-live-page .state-approval .voice-confirmation-dock,
+  .hologram-live-page .state-result .voice-confirmation-dock {
+    display: none;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-projectChatPicker,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-chatContext {
+    grid-template-columns: minmax(0, 1fr) 180px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-projectChatPicker .preview-meta,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-chatContext .preview-meta {
+    grid-template-columns: minmax(0, 1fr) 180px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-projectChatPicker .assistant-avatar,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-chatContext .assistant-avatar {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: start;
+    justify-self: center;
+    width: 92px;
+    max-width: 92px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape.state-projectChatPicker .voice-status,
+  .hologram-live-page .hologram-preview.hologram-landscape.state-chatContext .voice-status {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .hologram-live-page .project-chat-list,
+  .hologram-live-page .chat-context-panel {
+    width: min(100%, 570px);
+    gap: 4px;
+  }
+
+  .hologram-live-page .project-chat-row {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    gap: 7px;
+    min-height: 34px;
+    padding: 3px 7px;
+  }
+
+  .hologram-live-page .project-chat-row i {
+    width: 20px;
+    height: 20px;
+  }
+
+  .hologram-live-page .project-chat-row strong,
+  .hologram-live-page .project-chat-row span,
+  .hologram-live-page .project-chat-row em {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .project-chat-row span {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .project-chat-row b {
+    display: none;
+  }
+
+  .hologram-live-page .project-chat-actions {
+    flex-wrap: nowrap;
+    gap: 5px;
+    margin: 0;
+  }
+
+  .hologram-live-page .project-chat-actions span {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .hologram-live-page .chat-context-panel dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .hologram-live-page .chat-context-panel dt,
+  .hologram-live-page .chat-context-panel dd,
+  .hologram-live-page .last-message-card span,
+  .hologram-live-page .last-message-card em {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .chat-context-panel dd {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .last-message-card {
+    gap: 3px;
+    padding: 6px 9px;
+  }
+
+  .hologram-live-page .last-message-card blockquote {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .hologram-live-page .running-layout {
+    width: min(100%, 440px);
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 0.8fr);
+    gap: 7px;
+  }
+
+  .hologram-live-page .progress-list,
+  .hologram-live-page .background-events {
+    gap: 3px;
+  }
+
+  .hologram-live-page .progress-step {
+    min-height: 24px;
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .hologram-live-page .background-event {
+    gap: 3px;
+    padding: 6px 8px;
+  }
+
+  .hologram-live-page .background-event strong,
+  .hologram-live-page .background-event span,
+  .hologram-live-page .background-event em {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .approval-box,
+  .hologram-live-page .result-box {
+    width: min(100%, 440px);
+    gap: 5px 10px;
+    padding: 7px 10px;
+  }
+
+  .hologram-live-page .approval-box strong {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  .hologram-live-page .approval-box p,
+  .hologram-live-page .result-box p,
+  .hologram-live-page .result-box span {
+    font-size: 12px;
+  }
+
+  .hologram-live-page .result-box strong {
+    font-size: 16px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-height: 42px;
+    max-height: 42px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-strip:has(.reflection-item) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    min-height: 40px;
+    padding: 4px 7px;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item span,
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item strong {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hologram-live-page .hologram-preview.hologram-landscape .connection-item i {
+    order: initial;
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
   }
 }

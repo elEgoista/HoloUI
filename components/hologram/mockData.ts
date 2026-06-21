@@ -20,11 +20,7 @@ export const hologramStates: HologramRuntimeState[] = [
     projectName: "HoloCodex Deck",
     branchName: "feature/hologram-ui",
     voice: { mic: "idle", wakeWord: "Codex", voiceControl: "active" },
-    availableVoiceCommands: [
-      { id: "open-project", phrase: "open project", tone: "primary" },
-      { id: "task-list", phrase: "open task list" },
-      { id: "active-chat", phrase: "show active chat" }
-    ],
+    availableVoiceCommands: [],
     connection: noProjectConnection
   },
   {
@@ -39,7 +35,7 @@ export const hologramStates: HologramRuntimeState[] = [
     ],
     voice: { mic: "idle", wakeWord: "Codex", voiceControl: "active" },
     availableVoiceCommands: [
-      { id: "first", phrase: "open first", tone: "primary" },
+      { id: "first", phrase: "HoloCodex Deck", tone: "primary" },
       { id: "marketplace", phrase: "marketplace agent" },
       { id: "filter", phrase: "filter Codex" },
       { id: "new-chat", phrase: "new chat" },
@@ -128,7 +124,7 @@ export const hologramStates: HologramRuntimeState[] = [
     ],
     availableVoiceCommands: [
       { id: "progress", phrase: "show progress", tone: "primary" },
-      { id: "task-list", phrase: "open task list" },
+      { id: "task-list", phrase: "switch task" },
       { id: "errors", phrase: "show errors" },
       { id: "last-file", phrase: "open last file", tone: "warning" }
     ],
@@ -148,7 +144,7 @@ export const hologramStates: HologramRuntimeState[] = [
       { id: "once", phrase: "Approve once", tone: "warning" },
       { id: "session", phrase: "Approve session", tone: "warning" },
       { id: "details", phrase: "View details" },
-      { id: "skip", phrase: "Skip approval", tone: "error" }
+      { id: "skip", phrase: "Decline", tone: "error" }
     ],
     connection: { ...baseConnection, codex: "busy", railStatus: "approval needed" }
   },

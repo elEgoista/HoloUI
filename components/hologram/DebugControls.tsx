@@ -21,7 +21,16 @@ export function DebugControls({
   onBrightnessChange: (enabled: boolean) => void;
   onHighContrastChange: (enabled: boolean) => void;
 }) {
-  const states: HologramAgentState[] = ["idle", "listening", "confirm", "running", "approval", "result"];
+  const states: HologramAgentState[] = [
+    "wakeup",
+    "projectChatPicker",
+    "chatContext",
+    "listening",
+    "confirm",
+    "running",
+    "approval",
+    "result"
+  ];
 
   return (
     <aside className="debug-controls" aria-label="Hologram visual debug controls">

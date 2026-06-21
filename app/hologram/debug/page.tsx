@@ -2,13 +2,15 @@
 
 import { DebugControls } from "@/components/hologram/DebugControls";
 import { HologramShell } from "@/components/hologram/HologramShell";
+import { hologramDebugRoutes } from "@/components/hologram/debugStateRoutes";
 import { hologramStates } from "@/components/hologram/mockData";
 import type { HologramAgentState } from "@/components/hologram/types";
 import { getStoredLocalToken, storeLocalToken } from "@/lib/hologram/client";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export default function HologramDebugPage() {
-  const [activeState, setActiveState] = useState<HologramAgentState>("idle");
+  const [activeState, setActiveState] = useState<HologramAgentState>("wakeup");
   const [reflectionMode, setReflectionMode] = useState(false);
   const [brightnessBoost, setBrightnessBoost] = useState(false);
   const [highContrast, setHighContrast] = useState(false);
@@ -37,12 +39,21 @@ export default function HologramDebugPage() {
         </div>
       </header>
 
-      <section className="debug-board" aria-label="Six hologram states">
+      <nav className="debug-state-links" aria-label="Standalone hologram state pages">
+        {hologramDebugRoutes.map((route, index) => (
+          <Link key={route.state} href={`/hologram/debug/${route.slug}`}>
+            <span>{index + 1}</span>
+            {route.label}
+          </Link>
+        ))}
+      </nav>
+
+      <section className="debug-board" aria-label="Eight hologram states">
         {hologramStates.map((state, index) => (
           <HologramShell
             key={state.agentState}
             state={state}
-            previewLabel={`${index + 1}. ${state.agentState}`}
+            previewLabel={`${index + 1}. ${state.agentState.replace(/([a-z])([A-Z])/g, "$1 $2")}`}
             reflectionMode={reflectionMode}
             brightnessBoost={brightnessBoost}
             highContrast={highContrast}

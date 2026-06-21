@@ -1,11 +1,17 @@
 import type { VoiceOption } from "./types";
 
-export function VoiceOptions({ options }: { options: VoiceOption[] }) {
+export function VoiceOptions({
+  options,
+  showLabel = true
+}: {
+  options: VoiceOption[];
+  showLabel?: boolean;
+}) {
   if (!options.length) return null;
 
   return (
     <div className="voice-options" aria-label="Available voice commands">
-      <span>Say one command:</span>
+      {showLabel ? <span>Say one command:</span> : null}
       <div className="voice-option-row">
         {options.map((option) => (
           <div key={option.id} className={`holo-command-hint hint-${option.tone ?? "default"}`}>
