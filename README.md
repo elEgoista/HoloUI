@@ -1,258 +1,387 @@
-# HoloCodex Deck
+![HoloUI voice-first holographic cockpit running in a HoloBox](docs/assets/hero-holoui.png)
 
-HoloCodex Deck is a local Next.js hologram interface for monitoring and controlling a Codex-style agent workflow from a phone placed in a Pepper's Ghost box.
+# HoloUI
 
-The MVP is voice-first: `/hologram` is a status surface, not a touchscreen dashboard. It displays what the assistant is doing, what it understood, and what the user can say next.
+**A voice-first holographic cockpit for coding agents.**
 
-## Status
+HoloUI turns your phone into a small holographic control surface for supervising local Codex-style agent workflows.
 
-Implemented:
+Place the phone horizontally inside a Pepper’s Ghost / HoloBox device, say a task, confirm it, and watch the agent move through project context, listening, confirmation, running, approval, and result states.
 
-- `/hologram` fullscreen holographic assistant surface.
-- `/hologram/debug` 3x2 visual state preview with dev-only controls.
-- `/dashboard` technical debug dashboard.
-- Server-sent events for live task updates.
-- Mock runner with approval, review, follow-up, and result states.
-- Codex CLI runner v1 with streamed logs, controlled CLI diagnostics, git/test summary collection, and safe config-only project execution.
-- Web Speech API voice capture on `/hologram` with confirmation-before-send and manual text fallback.
-- Config-driven git status and test command execution.
-- Optional local token security.
-- Real avatar image assets for the assistant character.
-- CSS hologram environment for HUD rings, glow, particles, scan lines, waveform, and state accents.
+---
 
-Not implemented:
+## What it is
 
-- Codex SDK / App Server execution.
-- Persistent task database.
-- Production authentication or pairing.
-- Real hardware tuning inside a physical hologram box.
+HoloUI is a local-first interface for controlling and monitoring coding agents from a phone-based holographic UI.
 
-## Install
+It is not an IDE.
+It is not a model.
+It is not a replacement for Codex.
+It is not a generic dashboard.
+
+It is a **voice/avatar control layer** for local coding-agent work.
+
+The current real runner is **Codex CLI**. Future adapters may include Claude Code or other local agent CLIs.
+
+---
+
+## Why it exists
+
+Coding agents are powerful, but once they start working in the background, the user often loses situational awareness.
+
+You need to know:
+
+* which project or chat is active;
+* what task is running;
+* whether the agent needs approval;
+* whether tests passed or failed;
+* what changed;
+* what to say next;
+* how to continue without staying glued to the IDE.
+
+HoloUI explores a different control surface:
+
+> A small always-visible holographic companion for coding-agent supervision.
+
+---
+
+## Who it is for
+
+HoloUI is for:
+
+* developers using Codex CLI or local coding agents;
+* AI-native builders running background agent tasks;
+* makers experimenting with physical AI interfaces;
+* people building multi-agent or parallel task workflows;
+* developers who want a lightweight agent cockpit away from the main screen;
+* teams exploring approval, review, and supervision flows for coding agents.
+
+---
+
+## What it does now
+
+Current working capabilities:
+
+* phone-oriented `/hologram` interface;
+* 8-state voice/avatar HoloBox UX;
+* `/hologram/debug` preview for all hologram states;
+* local `/dashboard` for technical diagnostics;
+* Web Speech API voice capture;
+* manual text fallback;
+* explicit confirmation before sending a task to the agent;
+* real Codex CLI runner integration;
+* streamed task logs/events;
+* Git safety checks for real Codex runs;
+* configured test command execution;
+* optional local token for LAN testing;
+* avatar/backplate/holographic visual system;
+* local-first Next.js app.
+
+---
+
+## Core HoloBox experience
+
+The HoloBox interface is built around 8 compact states:
+
+1. **WakeUp / Hello UI**
+   The assistant is idle and ready. The user says “wake up”.
+
+2. **Project / Chat Picker**
+   The user chooses an existing project/chat, starts a new chat, starts a new project, or continues the last context.
+
+3. **Chat Context**
+   The interface shows the selected source, project/chat context, last message, and available voice actions.
+
+4. **Listening**
+   The assistant listens for a task. The user can say “cancel” to stop without creating a task.
+
+5. **Confirm**
+   The recognized command is shown before anything is sent to Codex.
+
+6. **Running**
+   The agent is working. The interface shows compact progress and subtle background notifications.
+
+7. **Approval**
+   The agent needs confirmation for a command or action.
+
+8. **Result**
+   The task is complete. HoloUI shows changed files, test status, summary, and next actions.
+
+---
+
+## How it works
+
+Typical local flow:
+
+1. Run HoloUI on your Mac.
+2. Open `/hologram` on your phone.
+3. Place the phone horizontally inside a holographic / Pepper’s Ghost box.
+4. Say “wake up”.
+5. Choose a project or continue the last context.
+6. Dictate a task.
+7. Confirm before it reaches Codex.
+8. Codex runs locally.
+9. HoloUI shows running, approval, and result states.
+10. Use the Mac dashboard for deeper review if needed.
+
+---
+
+## HoloBox vs Dashboard
+
+HoloUI has two different surfaces:
+
+| Surface           | Purpose                                            |
+| ----------------- | -------------------------------------------------- |
+| `/hologram`       | Voice-first HoloBox UI for phone reflection        |
+| `/hologram/debug` | Preview all hologram states during development     |
+| `/dashboard`      | Technical diagnostics, logs, health, runner status |
+
+The hologram UI is intentionally compact.
+
+It should not become a dense desktop dashboard.
+It should show only what the user needs to understand the current agent state.
+
+---
+
+## Features
+
+### Hologram UX
+
+* avatar-first interface;
+* dark high-contrast HoloBox style;
+* compact 8-state flow;
+* landscape phone layout;
+* project/chat context before voice input;
+* confirmation before task submission;
+* running, approval, and result states;
+* compact bottom status rail;
+* debug preview for all states.
+
+### Voice flow
+
+* Web Speech API support;
+* `ru-RU` voice recognition mode;
+* manual input fallback;
+* explicit confirmation before `/api/tasks`;
+* cancel flow during listening;
+* no automatic task submission from raw transcript.
+
+### Codex runner
+
+* local Codex CLI runner v1;
+* supports real task execution;
+* streams logs/events;
+* stores Codex thread/run metadata in task state;
+* runs configured test command after task completion.
+
+### Git safety
+
+* checks whether the project is a Git repository;
+* blocks real Codex runs in non-Git projects by default;
+* supports development-only skip mode;
+* captures working tree state before/after runs;
+* summarizes changed files.
+
+### Debug tools
+
+* `/api/health`;
+* `/hologram/debug`;
+* `/dashboard`;
+* runner mode visibility;
+* task status visibility;
+* project configuration visibility.
+
+---
+
+## Quickstart
+
+### 1. Install
 
 ```bash
-cd /Users/Hello/Desktop/codex/holocodex-deck
 npm install
-cp config.example.json config.local.json
 ```
 
-Edit `config.local.json` before using real projects.
+### 2. Configure
 
-## Run
+Create or update your local config file according to the project’s existing config format.
 
-Local-only:
+Typical local config should define:
+
+* project name;
+* project path;
+* runner mode;
+* Codex CLI command;
+* test command;
+* optional LAN token.
+
+Local config files should not be committed.
+
+### 3. Run locally
 
 ```bash
-NEXT_IGNORE_INCORRECT_LOCKFILE=1 npm run dev -- --hostname 127.0.0.1 --port 8787
+npm run dev
 ```
 
-LAN testing:
+Default local URL depends on your config and dev server port.
 
-```bash
-HOCODEX_LOCAL_TOKEN='choose-a-local-token' \
-NEXT_IGNORE_INCORRECT_LOCKFILE=1 \
-ALLOW_LAN=true \
-npm run dev -- --hostname 0.0.0.0 --port 8787
+Example:
+
+```text
+http://localhost:8787
 ```
 
-Security note: do not expose this app to the public internet. If binding to `0.0.0.0`, set `HOCODEX_LOCAL_TOKEN` or `HOLODEX_LOCAL_TOKEN`. The UI can store that token in `localStorage` from `/dashboard` or `/hologram/debug`.
+### 4. Open the hologram UI
 
-## Open On Phone
+On the Mac:
 
-1. Find the laptop IP, for example `ipconfig getifaddr en0`.
-2. Open `http://LOCAL_IP:8787/hologram`.
-3. If a token is configured, first open `http://LOCAL_IP:8787/hologram/debug` or `/dashboard` and save the token.
-4. Put the phone horizontally in the hologram box.
-5. Increase brightness, use a dark room, and disable auto-lock if Wake Lock is unavailable.
+```text
+http://localhost:8787/hologram
+```
+
+On a phone in the same local network:
+
+```text
+http://<your-mac-lan-ip>:8787/hologram
+```
+
+Example:
+
+```text
+http://192.168.1.60:8787/hologram
+```
+
+### 5. Open debug mode
+
+```text
+http://localhost:8787/hologram/debug
+```
+
+Or from phone:
+
+```text
+http://<your-mac-lan-ip>:8787/hologram/debug
+```
+
+### 6. Check health
+
+```text
+http://localhost:8787/api/health
+```
+
+---
+
+## Recommended phone setup
+
+For the current browser-based prototype:
+
+1. Open `/hologram` on the phone.
+2. Rotate the phone to landscape.
+3. Place it horizontally inside the holographic box.
+4. Keep brightness high.
+5. Use `/hologram/debug` to check all states.
+6. Use the Mac dashboard only for deeper diagnostics.
+
+A native iOS companion or PWA wrapper is future work.
+
+---
 
 ## Routes
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Redirects to `/hologram`. |
-| `/hologram` | Voice-only fullscreen hologram state surface. |
-| `/hologram/debug` | 3x2 state preview, reflection/brightness/high-contrast controls, token entry. |
-| `/dashboard` | Technical debug dashboard for tasks, git, tests, logs, approvals. |
-| `/api/health` | Health response with version, runner mode, project count, SSE availability. |
-| `/api/config` | Public config without project paths or test commands. |
-| `/api/projects` | Public project summaries. |
-| `/api/projects/:id/git` | Branch, status, and diff stat. |
-| `/api/projects/:id/tests` | Runs configured `testCommand`. |
-| `/api/tasks` | List/create/reset in-memory tasks. |
-| `/api/tasks/:id` | Read one task. |
-| `/api/tasks/:id/follow-up` | Mock follow-up prompt. |
-| `/api/tasks/:id/approval` | Mock approval decision. |
-| `/api/events` | SSE stream. |
+| Route             | Purpose                              |
+| ----------------- | ------------------------------------ |
+| `/hologram`       | Main phone/HoloBox interface         |
+| `/hologram/debug` | Development preview for all 8 states |
+| `/dashboard`      | Technical dashboard and diagnostics  |
+| `/api/health`     | Runtime health endpoint              |
+| `/api/tasks`      | Task creation / task status API      |
 
-## Hologram UX
+---
 
-- `/hologram` renders one active state fullscreen.
-- `/hologram/debug` renders all six MVP states: idle, listening, confirm, running, approval, result.
-- Actions in `/hologram` are non-clickable voice command hints.
-- Mirror/reflection classes are implemented in CSS:
-  - `.reflection-mode`
-  - `.brightness-boost`
-  - `.high-contrast-mode`
-- The assistant avatar uses real image assets for the character expression and CSS for the live hologram environment.
+## Current runner model
 
-## Avatar Assets
+HoloUI currently targets a local Codex CLI workflow.
 
-Character images live in `public/avatar/`.
+The product does not bundle a model.
+It does not replace Codex.
+It acts as a control layer around local agent execution.
 
-Expected files:
+Current real runner:
 
 ```text
-public/avatar/avatar-base-neutral.jpeg
-public/avatar/avatar-soft-smile.jpeg
-public/avatar/avatar-eyes-closed.jpeg
-public/avatar/avatar-talk-1.jpeg
-public/avatar/avatar-talk-2.jpeg
-public/avatar/avatar-talk-3.jpeg
-public/avatar/avatar-smile-eyes-closed.jpeg
-public/avatar/avatar-thinking-neutral.jpeg
+Codex CLI
 ```
 
-Required:
-
-- `avatar-base-neutral.jpeg`
-
-Optional with fallbacks:
-
-- `avatar-soft-smile.jpeg` falls back to neutral.
-- `avatar-eyes-closed.jpeg` falls back to neutral.
-- `avatar-smile-eyes-closed.jpeg` falls back to soft smile or eyes closed.
-- `avatar-talk-1.jpeg`, `avatar-talk-2.jpeg`, `avatar-talk-3.jpeg` fall back to neutral plus waveform.
-- `avatar-thinking-neutral.jpeg` falls back to neutral.
-
-Expression behavior:
-
-- Blink uses `avatar-eyes-closed.jpeg` every 3-7 seconds for roughly 120-180 ms.
-- Idle soft smile uses `avatar-soft-smile.jpeg` every 20-45 seconds for roughly 1.2-2.5 seconds.
-- `result-success` uses soft smile as the primary visual.
-- `speaking=true` cycles `avatar-talk-1.jpeg -> avatar-talk-2.jpeg -> avatar-talk-3.jpeg -> avatar-talk-2.jpeg -> avatar-talk-1.jpeg` at about 150 ms per frame.
-- CSS remains responsible for HUD rings, glow, particles, scan lines, waveform, mirror mode, and state color accents.
-
-## Avatar Backplate
-
-The avatar background is code-generated, not a bitmap. It lives in:
-
-- `components/avatar/AvatarBackplate.tsx`
-- `components/avatar/AvatarBackplate.module.css`
-- `components/avatar/avatarBackplateData.ts`
-
-The backplate renders:
-
-- segmented HUD rings and arcs;
-- vertical audio waveform bars behind the character;
-- target markers and alignment lines;
-- subtle particles;
-- running-state scan sweep;
-- amber, green, or red state accents for approval/results.
-
-Waveform bars, marker positions, and particle positions are deterministic arrays in `avatarBackplateData.ts`, so the layout is stable across renders. Character expression images remain separate from the backplate.
-
-## Config
-
-```json
-{
-  "projects": [
-    {
-      "id": "default",
-      "name": "Marketplace Agent",
-      "path": "/Users/YOUR_USER/projects/marketplace-agent",
-      "testCommand": "npm test",
-      "defaultBranch": "main"
-    }
-  ],
-  "server": {
-    "port": 8787,
-    "host": "0.0.0.0"
-  },
-  "runner": {
-    "mode": "mock"
-  },
-  "codexCli": {
-    "skipGitRepoCheck": false
-  }
-}
-```
-
-`path` and `testCommand` stay server-side. The browser receives only public project summaries.
-
-Set `runner.mode` to `codex-cli` to use the local Codex CLI adapter. The adapter checks `codex --version` and `codex exec --help`, then runs:
-
-```bash
-codex --ask-for-approval never exec --json --cd <configured project path> --sandbox workspace-write <prompt>
-```
-
-The prompt comes from the task body, but project path and test command always come from server-side config. If the CLI is missing or does not support `exec --json`, the task fails in a controlled way and `/api/health` reports the diagnostic.
-
-For development smoke tests outside a Git repository, set:
-
-```json
-{
-  "codexCli": {
-    "skipGitRepoCheck": true
-  }
-}
-```
-
-This makes the adapter add `--skip-git-repo-check`, marks the task with `gitSafety:
-"disabled-dev-only"`, and logs a warning. Keep it visible in `/api/health`; real coding
-tasks should use a Git repository with `skipGitRepoCheck: false`.
-
-When `runner.mode` is `codex-cli` and `skipGitRepoCheck` is false, HoloCodex refuses
-to start a real task for non-Git project paths:
+Future adapter directions:
 
 ```text
-This project is not a Git repository. HoloCodex requires Git for real agent runs so changes can be reviewed and rolled back. Initialize Git or enable codexCli.skipGitRepoCheck for development-only smoke tests.
+Claude Code
+Codex App Server / SDK
+Other local CLI agents
 ```
 
-## Voice Confirmation Flow
+Future adapters are not current production-ready capabilities unless explicitly implemented.
 
-`/hologram` uses browser speech recognition when available:
+---
 
-- language: `ru-RU`;
-- first pass captures a Codex task;
-- final transcript is shown in confirm state;
-- task creation happens only after Confirm / “confirm” / “подтвердить”;
-- Cancel clears the transcript;
-- unsupported browsers show a manual text fallback.
+## What is real vs what is mock
 
-Intermediate transcripts are never submitted automatically.
+### Real now
 
-## Diagnostics
+* local Next.js app;
+* `/hologram` 8-state UI;
+* `/hologram/debug`;
+* `/dashboard`;
+* Web Speech confirmation flow;
+* manual input fallback;
+* real Codex CLI runner v1;
+* Git safety checks;
+* configured test command execution;
+* streamed task events/logs;
+* local health endpoint.
 
-`/api/health` reports runner mode, Codex CLI availability/version/source, `skipGitRepoCheck`,
-token state, project count, per-project Git repo/status metadata, Git safety warnings,
-active tasks count, and last task status. `/dashboard` displays the same diagnostics plus
-client-side voice support.
+### Partial / demo / development-layer
 
-## What Is Mock
+* project/chat picker still depends on configured project and demo/in-memory context;
+* background notifications have model/render support but are not full production orchestration yet;
+* task/session persistence is not production-ready yet;
+* hardware readability still needs real HoloBox testing;
+* voice command navigation is not yet a complete natural-language command system.
 
-- Codex task execution when `runner.mode` is `mock`.
-- File changes.
-- Test results shown in runner output.
-- Approval request content.
-- Follow-up action handling.
+### Not implemented yet
 
-## What Is Real
+* persistent task/session database;
+* production auth and pairing;
+* production-grade LAN security;
+* real multi-agent orchestration;
+* native iOS app;
+* App Store distribution;
+* Claude Code adapter;
+* Codex App Server adapter;
+* cloud deployment.
 
-- Next.js app and routes.
-- SSE event stream.
-- In-memory task store.
-- Config loading.
-- Codex CLI detection and non-interactive `codex exec --json` execution when `runner.mode` is `codex-cli`.
-- Git safety checks for real Codex CLI runs.
-- Browser voice capture where Web Speech API is available.
-- Git branch/status/diff stat using fixed git commands.
-- Configured test command execution.
-- Optional token enforcement for API requests.
+---
 
-## Styling Decision
+## Security
 
-The original stack mentioned Tailwind CSS. This MVP intentionally uses CSS-only styling in `styles/hologram.css` and `app/globals.css` because the hologram UI depends on custom visual effects, reflection classes, and specialized responsive behavior. Tailwind is not required for the current MVP and is not listed as a dependency.
+HoloUI is intended for local development.
 
-## Checks
+Do not expose it directly to the public internet.
+
+The app can trigger local agent actions in your project directory. Treat it as a local developer tool with access to your codebase.
+
+Recommendations:
+
+* use it only on trusted local networks;
+* keep local tokens enabled when testing over LAN;
+* do not publish the server publicly;
+* do not point it at sensitive repositories without understanding the runner behavior;
+* review Git changes before committing.
+
+---
+
+## Development checks
+
+Run before pushing changes:
 
 ```bash
 npm run typecheck
@@ -261,12 +390,100 @@ npm test
 npm run build
 ```
 
-## Known Limitations
+Expected current baseline:
 
-- Codex CLI adapter v1 depends on the local `codex` binary and authenticated CLI state.
-- Codex SDK and App Server adapters are placeholders.
-- No persistent storage.
-- Token security is minimal LAN protection, not production auth.
-- `testCommand` uses shell execution, but only from local config.
-- Web Speech API availability varies by browser and device; iOS/Safari may require manual fallback.
-- Physical Pepper's Ghost readability still needs hardware QA.
+```text
+typecheck: pass
+lint: pass
+tests: pass
+build: pass
+```
+
+---
+
+## Media assets
+
+Current product photo:
+
+```text
+docs/assets/hero-holoui.png
+```
+
+Recommended future README assets:
+
+```text
+docs/assets/holoui-demo.gif
+docs/assets/holoui-8-states.png
+docs/assets/holobox-setup.jpg
+```
+
+Suggested placements:
+
+* hero screenshot near the top;
+* short GIF after “How it works”;
+* 8-state flow image near “Core HoloBox experience”;
+* physical setup photo near “Recommended phone setup”.
+
+Do not reference these files in README until they exist, otherwise GitHub will show broken images.
+
+---
+
+## Roadmap
+
+Near-term:
+
+* real HoloBox / iPhone visual QA;
+* polish reflection readability;
+* persistent task/session storage;
+* real project/chat history;
+* better voice command navigation;
+* real background task notification routing.
+
+Mid-term:
+
+* production pairing/auth for phone ↔ Mac;
+* PWA or iOS companion exploration;
+* richer approval flow;
+* better diff/result handoff;
+* Codex App Server / SDK adapter exploration;
+* Claude Code adapter exploration.
+
+Longer-term:
+
+* multi-agent supervision;
+* team/project profiles;
+* local-first agent cockpit;
+* hardware-friendly HoloBox mode;
+* demo media and public landing page.
+
+---
+
+## Project status
+
+HoloUI is an experimental local-first MVP.
+
+It is already useful as a prototype for:
+
+* voice-first agent control;
+* phone-based holographic UI;
+* Codex CLI task execution;
+* Git-safe local agent runs;
+* HoloBox state design.
+
+It is not yet a production-ready mobile app, hosted service, or secure team deployment.
+
+---
+
+## Naming
+
+**HoloUI** — project/product name.
+**HoloBox** — a small holographic / Pepper’s Ghost box for a phone.
+**Hologram UI** — the phone interface reflected inside the HoloBox.
+**Codex CLI** — the current real coding-agent runner.
+**Dashboard** — the technical diagnostics surface, separate from the HoloBox UI.
+
+---
+
+## License
+
+License TBD.
