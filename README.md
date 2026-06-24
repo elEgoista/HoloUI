@@ -2,308 +2,28 @@
 
 # HoloUI
 
-**A voice-first holographic cockpit for coding agents.**
+**A holographic voice cockpit for coding agents.**
 
-HoloUI turns your phone into a small holographic control surface for supervising local Codex-style agent workflows.
+HoloUI turns your phone into a small cyberpunk control deck for your agents.
 
-Place the phone horizontally inside a Pepper’s Ghost / HoloBox device, say a task, confirm it, and watch the agent move through project context, listening, confirmation, running, approval, and result states.
+Put the phone into a HoloBox, say “wake up”, speak a task, and watch Codex move through listening, running, approval, and result states.
+
+Work should be useful.
+Work should be safe.
+Work should also feel a little rock’n’roll.
 
 ---
 
-## What it is
+## What is HoloUI?
 
-HoloUI is a local-first interface for controlling and monitoring coding agents from a phone-based holographic UI.
+HoloUI is a local-first voice/avatar interface for supervising coding agents from a phone-based holographic display.
 
 It is not an IDE.
 It is not a model.
-It is not a replacement for Codex.
 It is not a generic dashboard.
+It is not a replacement for Codex.
 
-It is a **voice/avatar control layer** for local coding-agent work.
-
-The current real runner is **Codex CLI**. Future adapters may include Claude Code or other local agent CLIs.
-
----
-
-## Why it exists
-
-Coding agents are powerful, but once they start working in the background, the user often loses situational awareness.
-
-You need to know:
-
-* which project or chat is active;
-* what task is running;
-* whether the agent needs approval;
-* whether tests passed or failed;
-* what changed;
-* what to say next;
-* how to continue without staying glued to the IDE.
-
-HoloUI explores a different control surface:
-
-> A small always-visible holographic companion for coding-agent supervision.
-
----
-
-## Who it is for
-
-HoloUI is for:
-
-* developers using Codex CLI or local coding agents;
-* AI-native builders running background agent tasks;
-* makers experimenting with physical AI interfaces;
-* people building multi-agent or parallel task workflows;
-* developers who want a lightweight agent cockpit away from the main screen;
-* teams exploring approval, review, and supervision flows for coding agents.
-
----
-
-## What it does now
-
-Current working capabilities:
-
-* phone-oriented `/hologram` interface;
-* 8-state voice/avatar HoloBox UX;
-* `/hologram/debug` preview for all hologram states;
-* local `/dashboard` for technical diagnostics;
-* Web Speech API voice capture;
-* manual text fallback;
-* explicit confirmation before sending a task to the agent;
-* real Codex CLI runner integration;
-* streamed task logs/events;
-* Git safety checks for real Codex runs;
-* configured test command execution;
-* optional local token for LAN testing;
-* avatar/backplate/holographic visual system;
-* local-first Next.js app.
-
----
-
-## Core HoloBox experience
-
-The HoloBox interface is built around 8 compact states:
-
-1. **WakeUp / Hello UI**
-   The assistant is idle and ready. The user says “wake up”.
-
-2. **Project / Chat Picker**
-   The user chooses an existing project/chat, starts a new chat, starts a new project, or continues the last context.
-
-3. **Chat Context**
-   The interface shows the selected source, project/chat context, last message, and available voice actions.
-
-4. **Listening**
-   The assistant listens for a task. The user can say “cancel” to stop without creating a task.
-
-5. **Confirm**
-   The recognized command is shown before anything is sent to Codex.
-
-6. **Running**
-   The agent is working. The interface shows compact progress and subtle background notifications.
-
-7. **Approval**
-   The agent needs confirmation for a command or action.
-
-8. **Result**
-   The task is complete. HoloUI shows changed files, test status, summary, and next actions.
-
----
-
-## How it works
-
-Typical local flow:
-
-1. Run HoloUI on your Mac.
-2. Open `/hologram` on your phone.
-3. Place the phone horizontally inside a holographic / Pepper’s Ghost box.
-4. Say “wake up”.
-5. Choose a project or continue the last context.
-6. Dictate a task.
-7. Confirm before it reaches Codex.
-8. Codex runs locally.
-9. HoloUI shows running, approval, and result states.
-10. Use the Mac dashboard for deeper review if needed.
-
----
-
-## HoloBox vs Dashboard
-
-HoloUI has two different surfaces:
-
-| Surface           | Purpose                                            |
-| ----------------- | -------------------------------------------------- |
-| `/hologram`       | Voice-first HoloBox UI for phone reflection        |
-| `/hologram/debug` | Preview all hologram states during development     |
-| `/dashboard`      | Technical diagnostics, logs, health, runner status |
-
-The hologram UI is intentionally compact.
-
-It should not become a dense desktop dashboard.
-It should show only what the user needs to understand the current agent state.
-
----
-
-## Features
-
-### Hologram UX
-
-* avatar-first interface;
-* dark high-contrast HoloBox style;
-* compact 8-state flow;
-* landscape phone layout;
-* project/chat context before voice input;
-* confirmation before task submission;
-* running, approval, and result states;
-* compact bottom status rail;
-* debug preview for all states.
-
-### Voice flow
-
-* Web Speech API support;
-* `ru-RU` voice recognition mode;
-* manual input fallback;
-* explicit confirmation before `/api/tasks`;
-* cancel flow during listening;
-* no automatic task submission from raw transcript.
-
-### Codex runner
-
-* local Codex CLI runner v1;
-* supports real task execution;
-* streams logs/events;
-* stores Codex thread/run metadata in task state;
-* runs configured test command after task completion.
-
-### Git safety
-
-* checks whether the project is a Git repository;
-* blocks real Codex runs in non-Git projects by default;
-* supports development-only skip mode;
-* captures working tree state before/after runs;
-* summarizes changed files.
-
-### Debug tools
-
-* `/api/health`;
-* `/hologram/debug`;
-* `/dashboard`;
-* runner mode visibility;
-* task status visibility;
-* project configuration visibility.
-
----
-
-## Quickstart
-
-### 1. Install
-
-```bash
-npm install
-```
-
-### 2. Configure
-
-Create or update your local config file according to the project’s existing config format.
-
-Typical local config should define:
-
-* project name;
-* project path;
-* runner mode;
-* Codex CLI command;
-* test command;
-* optional LAN token.
-
-Local config files should not be committed.
-
-### 3. Run locally
-
-```bash
-npm run dev
-```
-
-Default local URL depends on your config and dev server port.
-
-Example:
-
-```text
-http://localhost:8787
-```
-
-### 4. Open the hologram UI
-
-On the Mac:
-
-```text
-http://localhost:8787/hologram
-```
-
-On a phone in the same local network:
-
-```text
-http://<your-mac-lan-ip>:8787/hologram
-```
-
-Example:
-
-```text
-http://192.168.1.60:8787/hologram
-```
-
-### 5. Open debug mode
-
-```text
-http://localhost:8787/hologram/debug
-```
-
-Or from phone:
-
-```text
-http://<your-mac-lan-ip>:8787/hologram/debug
-```
-
-### 6. Check health
-
-```text
-http://localhost:8787/api/health
-```
-
----
-
-## Recommended phone setup
-
-For the current browser-based prototype:
-
-1. Open `/hologram` on the phone.
-2. Rotate the phone to landscape.
-3. Place it horizontally inside the holographic box.
-4. Keep brightness high.
-5. Use `/hologram/debug` to check all states.
-6. Use the Mac dashboard only for deeper diagnostics.
-
-A native iOS companion or PWA wrapper is future work.
-
----
-
-## Routes
-
-| Route             | Purpose                              |
-| ----------------- | ------------------------------------ |
-| `/hologram`       | Main phone/HoloBox interface         |
-| `/hologram/debug` | Development preview for all 8 states |
-| `/dashboard`      | Technical dashboard and diagnostics  |
-| `/api/health`     | Runtime health endpoint              |
-| `/api/tasks`      | Task creation / task status API      |
-
----
-
-## Current runner model
-
-HoloUI currently targets a local Codex CLI workflow.
-
-The product does not bundle a model.
-It does not replace Codex.
-It acts as a control layer around local agent execution.
+It is a **holographic control layer** for local agent work.
 
 Current real runner:
 
@@ -319,18 +39,222 @@ Codex App Server / SDK
 Other local CLI agents
 ```
 
-Future adapters are not current production-ready capabilities unless explicitly implemented.
+---
+
+## Why it exists
+
+Coding agents are powerful, but background work is easy to lose track of.
+
+You need to know what is running, what needs approval, what failed, what completed, which project is active, and what to say next.
+
+Usually that means more tabs, logs, dashboards, terminals, and mental clutter.
+
+HoloUI tries a different idea:
+
+> Your coding agent should feel present, visible, controllable, and fun to work with.
+
+A small holographic cockpit on your desk.
+A voice-first assistant.
+A clear state machine.
+No mystery background magic.
+
+Just enough future to make coding feel alive.
 
 ---
 
-## What is real vs what is mock
+## Who it is for
+
+HoloUI is for:
+
+* developers using Codex CLI or local coding agents;
+* AI-native builders running background agent tasks;
+* makers experimenting with physical AI interfaces;
+* people who want a visible agent companion outside the IDE;
+* teams exploring approval, review, and multi-agent supervision flows.
+
+---
+
+## What is a HoloBox?
+
+A **HoloBox** is a small physical box for a phone, based on the Pepper’s Ghost reflection effect.
+
+The phone lies horizontally inside the box.
+An angled transparent plate reflects the phone screen.
+The result looks like a small floating holographic interface.
+
+You can 3D print the body and start with simple clear plastic or acrylic for early tests.
+
+Reference model:
+
+```text
+Hologram Box for Smartphones
+https://makerworld.com/en/models/716763-hologram-box-for-smartphones
+```
+
+For a cleaner result, use **teleprompter / beam splitter glass** instead of ordinary plastic.
+
+For this prototype we are targeting **50/50 teleprompter glass**:
+
+```text
+50% transmission
+50% reflection
+```
+
+---
+
+## How it works
+
+1. Run HoloUI locally on your Mac.
+2. Open `/hologram` on your phone.
+3. Place the phone in the HoloBox.
+4. Say “wake up”.
+5. Pick a project or continue the current context.
+6. Speak a task.
+7. Confirm before it reaches Codex.
+8. Codex runs locally.
+9. HoloUI shows progress, approvals, and results.
+10. Use `/dashboard` only when you need deeper diagnostics.
+
+---
+
+## Core HoloBox experience
+
+The hologram UI is built around 8 compact states:
+
+| State                 | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| WakeUp                | The assistant is present and ready            |
+| Project / Chat Picker | Choose where the next task goes               |
+| Chat Context          | See project, source, branch, and last message |
+| Listening             | Speak the task or say “cancel”                |
+| Confirm               | Review before sending to Codex                |
+| Running               | Watch the agent work                          |
+| Approval              | Approve or decline a requested action         |
+| Result                | See files, tests, summary, and next actions   |
+
+---
+
+## HoloBox vs Dashboard
+
+HoloUI has two surfaces:
+
+| Surface           | Purpose                                    |
+| ----------------- | ------------------------------------------ |
+| `/hologram`       | Phone/HoloBox voice cockpit                |
+| `/hologram/debug` | Preview all 8 hologram states              |
+| `/dashboard`      | Technical diagnostics, logs, health, tasks |
+
+The HoloBox UI is intentionally minimal.
+
+It should feel like a living assistant, not a dense admin panel.
+
+The dashboard is for debugging.
+The HoloBox is for presence.
+
+---
+
+## What works now
+
+Current MVP capabilities:
+
+* phone-oriented `/hologram` interface;
+* 8-state voice/avatar HoloBox UX;
+* `/hologram/debug` state preview;
+* `/dashboard` diagnostics surface;
+* Web Speech API voice capture;
+* manual text fallback;
+* explicit confirmation before sending a task;
+* `cancel` flow during listening;
+* real Codex CLI runner v1;
+* streamed task logs/events;
+* Git safety checks for real Codex runs;
+* configured test command execution;
+* optional local token for LAN testing;
+* local-first Next.js app.
+
+---
+
+## Quickstart
+
+### Install
+
+```bash
+npm install
+```
+
+### Configure
+
+Create local config from the project example.
+
+Typical config includes:
+
+* project name;
+* project path;
+* runner mode;
+* Codex CLI command;
+* test command;
+* optional LAN token.
+
+Do not commit local config files.
+
+### Run
+
+```bash
+npm run dev
+```
+
+Example local URL:
+
+```text
+http://localhost:8787
+```
+
+### Open HoloBox UI
+
+On Mac:
+
+```text
+http://localhost:8787/hologram
+```
+
+On phone in the same local network:
+
+```text
+http://<your-mac-lan-ip>:8787/hologram
+```
+
+Debug all states:
+
+```text
+http://localhost:8787/hologram/debug
+```
+
+Health check:
+
+```text
+http://localhost:8787/api/health
+```
+
+---
+
+## Routes
+
+| Route             | Purpose                      |
+| ----------------- | ---------------------------- |
+| `/hologram`       | Main phone/HoloBox interface |
+| `/hologram/debug` | Preview all 8 states         |
+| `/dashboard`      | Technical dashboard          |
+| `/api/health`     | Runtime health               |
+| `/api/tasks`      | Task API                     |
+
+---
+
+## What is real vs future
 
 ### Real now
 
 * local Next.js app;
 * `/hologram` 8-state UI;
-* `/hologram/debug`;
-* `/dashboard`;
 * Web Speech confirmation flow;
 * manual input fallback;
 * real Codex CLI runner v1;
@@ -339,13 +263,13 @@ Future adapters are not current production-ready capabilities unless explicitly 
 * streamed task events/logs;
 * local health endpoint.
 
-### Partial / demo / development-layer
+### Partial / prototype layer
 
-* project/chat picker still depends on configured project and demo/in-memory context;
-* background notifications have model/render support but are not full production orchestration yet;
+* project/chat picker uses configured project and demo/in-memory context;
+* background notifications have model/render support but are not full orchestration yet;
 * task/session persistence is not production-ready yet;
-* hardware readability still needs real HoloBox testing;
-* voice command navigation is not yet a complete natural-language command system.
+* hardware readability still needs real HoloBox QA;
+* voice navigation is not a complete natural-language command system yet.
 
 ### Not implemented yet
 
@@ -363,25 +287,25 @@ Future adapters are not current production-ready capabilities unless explicitly 
 
 ## Security
 
-HoloUI is intended for local development.
+HoloUI is a local developer tool.
 
-Do not expose it directly to the public internet.
+Do not expose it to the public internet.
 
-The app can trigger local agent actions in your project directory. Treat it as a local developer tool with access to your codebase.
+It can trigger local agent actions in your project directory. Treat it as a tool with access to your codebase.
 
 Recommendations:
 
-* use it only on trusted local networks;
-* keep local tokens enabled when testing over LAN;
+* use only on trusted local networks;
+* enable a local token for LAN testing;
 * do not publish the server publicly;
-* do not point it at sensitive repositories without understanding the runner behavior;
-* review Git changes before committing.
+* review Git changes before committing;
+* do not point it at sensitive repositories unless you understand the runner behavior.
 
 ---
 
 ## Development checks
 
-Run before pushing changes:
+Run before pushing:
 
 ```bash
 npm run typecheck
@@ -390,26 +314,17 @@ npm test
 npm run build
 ```
 
-Expected current baseline:
-
-```text
-typecheck: pass
-lint: pass
-tests: pass
-build: pass
-```
-
 ---
 
 ## Media assets
 
-Current product photo:
+Current product hero:
 
 ```text
 docs/assets/hero-holoui.png
 ```
 
-Recommended future README assets:
+Recommended future assets:
 
 ```text
 docs/assets/holoui-demo.gif
@@ -417,14 +332,7 @@ docs/assets/holoui-8-states.png
 docs/assets/holobox-setup.jpg
 ```
 
-Suggested placements:
-
-* hero screenshot near the top;
-* short GIF after “How it works”;
-* 8-state flow image near “Core HoloBox experience”;
-* physical setup photo near “Recommended phone setup”.
-
-Do not reference these files in README until they exist, otherwise GitHub will show broken images.
+Do not reference files that do not exist yet, or GitHub will show broken images.
 
 ---
 
@@ -433,28 +341,24 @@ Do not reference these files in README until they exist, otherwise GitHub will s
 Near-term:
 
 * real HoloBox / iPhone visual QA;
-* polish reflection readability;
+* better reflection readability;
 * persistent task/session storage;
 * real project/chat history;
 * better voice command navigation;
-* real background task notification routing.
+* real background task notifications;
+* README media assets.
 
-Mid-term:
+Later:
 
-* production pairing/auth for phone ↔ Mac;
+* production phone ↔ Mac pairing/auth;
 * PWA or iOS companion exploration;
 * richer approval flow;
 * better diff/result handoff;
 * Codex App Server / SDK adapter exploration;
-* Claude Code adapter exploration.
-
-Longer-term:
-
+* Claude Code adapter exploration;
 * multi-agent supervision;
-* team/project profiles;
-* local-first agent cockpit;
-* hardware-friendly HoloBox mode;
-* demo media and public landing page.
+* public demo video;
+* product landing page.
 
 ---
 
